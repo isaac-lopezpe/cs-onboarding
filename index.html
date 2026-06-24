@@ -220,7 +220,39 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 .sb-acc.open ~ .has-acc .sb-label::after,
 .has-acc.acc-open .sb-label::after{transform:rotate(90deg);opacity:.7;}
 
-/* COMPLETE */
+/* TIMER */
+.tn-timer{display:none;align-items:center;gap:7px;background:#fff;border:2px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 12px;font-size:13px;font-weight:700;color:#111;font-variant-numeric:tabular-nums;cursor:default;transition:background .4s,border-color .4s,color .4s;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.tn-timer.running{display:flex;}
+.tn-timer.warn{background:#FCD34D;border-color:#F59E0B;color:#78350F;}
+.tn-timer.danger{background:#EF4444;border-color:#DC2626;color:#fff;animation:pulse 1.2s infinite;box-shadow:0 0 12px rgba(239,68,68,.5);}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.85;transform:scale(1.03)}}
+.timer-icon{font-size:13px;}
+
+/* TOASTS */
+.toast-wrap{position:fixed;bottom:24px;right:24px;z-index:500;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+.toast{background:#fff;border:2px solid var(--g200);border-radius:14px;padding:14px 18px;max-width:320px;pointer-events:auto;animation:toastIn .3s ease;box-shadow:0 8px 32px rgba(0,0,0,.18);}
+.toast.removing{animation:toastOut .3s ease forwards;}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(8px) scale(.97)}}
+.toast-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.toast-icon{font-size:18px;flex-shrink:0;}
+.toast-title{font-size:13px;font-weight:700;color:#111;}
+.toast-body{font-size:12px;color:var(--g600);line-height:1.55;}
+.toast.t-warn{background:#FFFBEB;border-color:#F59E0B;}
+.toast.t-warn .toast-title{color:#78350F;}
+.toast.t-danger{background:#FEF2F2;border-color:#EF4444;}
+.toast.t-danger .toast-title{color:#991B1B;}
+.toast.t-ok{background:var(--gpale);border-color:var(--green);}
+.toast.t-ok .toast-title{color:var(--gdark);}
+
+.ci.ci-ac,.ci.ci-sg,.ci.ci-both{display:none;}
+.method-ac .ci.ci-ac,.method-both .ci.ci-ac{display:flex;}
+.method-sg .ci.ci-sg,.method-both .ci.ci-sg{display:flex;}
+.method-both .ci.ci-both{display:flex;}
+
+/* MANDATORY FINAL SECTIONS */
+.sb-item.mandatory .sb-dot{background:var(--orange);opacity:.6;}
+.sb-item.mandatory{border-left-color:rgba(242,101,34,.3);}
 .cc{background:var(--navy);border-radius:18px;padding:40px;text-align:center;margin-bottom:16px;}
 .cc-ico{font-size:44px;margin-bottom:14px;}
 .cc-t{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;}
@@ -244,10 +276,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <span class="tn-tag">Onboarding Checklist</span>
   </div>
   <div class="tn-right">
+    <div class="tn-timer" id="tn-timer"><span class="timer-icon">⏱</span><span id="timer-display">0:00</span></div>
     <span class="tn-prog">Progress: <b id="pct">0%</b></span>
     <button class="btn-reset" onclick="resetAll()">↩ Reset</button>
   </div>
 </nav>
+<div class="toast-wrap" id="toast-wrap"></div>
 <div class="pgwrap"><div class="pgbar" id="pgbar" style="width:0%"></div></div>
 
 <div class="layout">
@@ -352,7 +386,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   </div>
   <div class="sb-acc" id="acc-cc">
     <div class="sb-sub" id="sub-cc"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc')">Phone & Prospect List</span><div class="sb-sub-ck" onclick="subToggle('cc',event)"><div class="sb-sub-cc" id="ssbc-cc">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2')">Message Colors & Cadences</span><div class="sb-sub-ck" onclick="subToggle('cc2',event)"><div class="sb-sub-cc" id="ssbc-cc2">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2')">Message Colors & Channels</span><div class="sb-sub-ck" onclick="subToggle('cc2',event)"><div class="sb-sub-cc" id="ssbc-cc2">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc2b"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2b')">Follow-Up Cadences</span><div class="sb-sub-ck" onclick="subToggle('cc2b',event)"><div class="sb-sub-cc" id="ssbc-cc2b">✓</div></div></div>
     <div class="sb-sub" id="sub-cc3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc3')">AI & Snippets</span><div class="sb-sub-ck" onclick="subToggle('cc3',event)"><div class="sb-sub-cc" id="ssbc-cc3">✓</div></div></div>
     <div class="sb-sub" id="sub-cc4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc4')">Calls & Actions</span><div class="sb-sub-ck" onclick="subToggle('cc4',event)"><div class="sb-sub-cc" id="ssbc-cc4">✓</div></div></div>
     <div class="sb-sub" id="sub-cc5"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc5')">Showing Methods</span><div class="sb-sub-ck" onclick="subToggle('cc5',event)"><div class="sb-sub-cc" id="ssbc-cc5">✓</div></div></div>
@@ -373,9 +408,23 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-nav" onclick="goTo('reports')"><span class="sb-dot"></span><span class="sb-label">Reports & Intelligence</span></div>
     <div class="sb-ck" onclick="sbToggle('reports')"><div class="sb-cc" id="sbc-reports">✓</div></div>
   </div>
-  <div class="sb-item hi" id="sb-support">
-    <div class="sb-nav" onclick="goTo('support')"><span class="sb-dot"></span><span class="sb-label">Support & Wrap-up</span></div>
-    <div class="sb-ck" onclick="sbToggle('support')"><div class="sb-cc" id="sbc-support">✓</div></div>
+  <div class="sb-item hi" id="sb-reapps" style="display:none;">
+    <div class="sb-nav" onclick="sidebarClick('reapps')"><span class="sb-dot"></span><span class="sb-label">RE Applications</span></div>
+    <div class="sb-ck" onclick="sbToggle('reapps')"><div class="sb-cc" id="sbc-reapps">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-reapps" style="display:none;">
+    <div class="sb-sub" id="sub-reapps"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('reapps')">Templates Overview</span><div class="sb-sub-ck" onclick="subToggle('reapps',event)"><div class="sb-sub-cc" id="ssbc-reapps">✓</div></div></div>
+    <div class="sb-sub" id="sub-reapps2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('reapps2')">Configure Template</span><div class="sb-sub-ck" onclick="subToggle('reapps2',event)"><div class="sb-sub-cc" id="ssbc-reapps2">✓</div></div></div>
+  </div>
+  <div class="sb-div"></div>
+  <div class="sb-gl">✅ Mandatory Wrap-up</div>
+  <div class="sb-item hi mandatory" id="sb-chat-support">
+    <div class="sb-nav" onclick="goTo('chat-support')"><span class="sb-dot"></span><span class="sb-label">Chat Support & University</span></div>
+    <div class="sb-ck" onclick="sbToggle('chat-support')"><div class="sb-cc" id="sbc-chat-support">✓</div></div>
+  </div>
+  <div class="sb-item hi mandatory" id="sb-checkin">
+    <div class="sb-nav" onclick="goTo('checkin')"><span class="sb-dot"></span><span class="sb-label">Week 1 Check-In</span></div>
+    <div class="sb-ck" onclick="sbToggle('checkin')"><div class="sb-cc" id="sbc-checkin">✓</div></div>
   </div>
   <div class="sb-item hi" id="sb-data">
     <div class="sb-nav" onclick="goTo('data')"><span class="sb-dot"></span><span class="sb-label">Data Extraction</span></div>
@@ -400,6 +449,18 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <label class="mo" id="mo-ac"><input type="radio" name="method" value="ac" style="display:none" onchange="setMethod('ac')"><span class="mo-ico">👤</span><div><div class="mo-lbl">Accompanied only</div><div class="mo-desc">An agent is present for every showing</div></div></label>
     <label class="mo" id="mo-sg"><input type="radio" name="method" value="sg" style="display:none" onchange="setMethod('sg')"><span class="mo-ico">🔑</span><div><div class="mo-lbl">Self-guided only</div><div class="mo-desc">Prospects access units independently via lockbox</div></div></label>
     <label class="mo" id="mo-both"><input type="radio" name="method" value="both" style="display:none" onchange="setMethod('both')"><span class="mo-ico">🔀</span><div><div class="mo-lbl">Combination of both</div><div class="mo-desc">Some properties accompanied, some self-guided</div></div></label>
+  </div>
+  <div style="margin-top:16px;border-top:1px solid var(--g100);padding-top:16px;">
+    <p style="font-size:12px;font-weight:600;color:var(--g600);margin-bottom:10px;">Additional modules:</p>
+    <label class="mo" id="mo-reapps" style="border-color:var(--g200);">
+      <input type="checkbox" id="chk-reapps" style="display:none" onchange="setReApps(this.checked)">
+      <span class="mo-ico">📋</span>
+      <div>
+        <div class="mo-lbl">RentEngine Applications</div>
+        <div class="mo-desc">Client will use RE's rental application module — include setup walkthrough</div>
+      </div>
+      <span id="reapps-check" style="margin-left:auto;font-size:14px;color:var(--orange);display:none;">✓</span>
+    </label>
   </div>
   <button class="btn-start" id="btn-start" disabled onclick="startChecklist()">Start Checklist →</button>
 </div>
@@ -649,10 +710,10 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (4/4)</span></div><h2 class="st">Showing Windows & Availability Templates</h2></div>
   <div class="ib gr"><strong>Don't forget:</strong> Hit <strong>Save</strong> at top-right after setting these.</div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Self-Guided Showing Windows</strong> — select days/hours in blue</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Remote-Guided Showing Windows</strong> if applicable</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Note: accompanied windows set at agent/property level — not here</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Create <strong>Availability Templates</strong> — reusable accompanied time-slot sets for unit-level assignment</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Build a template from your personal availability slots, name it, and assign it to specific units later — instead of configuring each one from scratch."</p></div></div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Self-Guided Showing Windows</strong> — select days/hours in blue</div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Remote-Guided Showing Windows</strong> if applicable</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Note: accompanied windows set at agent/property level — not here</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Create <strong>Availability Templates</strong> — reusable accompanied time-slot sets for unit-level assignment</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Build a template from your personal availability slots, name it, and assign it to specific units later — instead of configuring each one from scratch."</p></div></div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Press <strong>Save</strong> ✅</div></div></div>
   </div></div>
   <div class="nr"><button class="bb" onclick="goTo('showings-co3')">← Back</button><button class="bn" onclick="goTo('prescreening')">Next: Prescreening →</button></div>
@@ -770,13 +831,13 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 <div class="sc" id="sc-properties3">
   <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (3/6)</span></div><h2 class="st">Edit Property — Step 2: Showing Method</h2><p class="ss">This is where the showing method is set at the unit level.</p></div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Select Accompanied — assign agents, explain <strong>Smart Assign</strong></div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Prospect-facing fields vs. internal fields (tenant contact info for notifications)</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Advanced settings</strong> — unit-level overrides for company showing settings</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Availability</strong> — select from a template or configure manually</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Connect lockbox, add combo code, add access instructions</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Adjust self-guided availability for this unit; explain <strong>PM Approve</strong> option</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">Both</span> Both methods: accompanied is primary, self-guided as backup — prospects see two options</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Select Accompanied — assign agents, explain <strong>Smart Assign</strong></div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Prospect-facing fields vs. internal fields (tenant contact info for notifications)</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Advanced settings</strong> — unit-level overrides for company showing settings</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Availability</strong> — select from a template or configure manually</div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Connect lockbox, add combo code, add access instructions</div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Adjust self-guided availability for this unit; explain <strong>PM Approve</strong> option</div></div></div>
+    <div class="ci ci-both" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">Both</span> Both methods: accompanied is primary, self-guided as backup — prospects see two options</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Assign <strong>Sub-Team</strong> to this property if applicable</div><div class="ci-s">Routes all communication for this property to only that sub-team's members</div></div></div>
   </div></div>
   <div class="nr"><button class="bb" onclick="goTo('properties2')">← Back</button><button class="bn" onclick="goTo('properties4')">Next →</button></div>
@@ -852,19 +913,99 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sys-row"><span class="sys-icon">🔵</span><div class="sys-text"><b>Unit Ready for Showing</b> (back on market) — sent to: Contacted, New, ShowingDesired, ShowingCanceled only. All other statuses skipped.</div></div>
     <div class="sys-row"><span class="sys-icon">⚫</span><div class="sys-text"><b>Post-Showing Follow-up</b> — blocked entirely if prospect is Withdrawn, Unresponsive, or NotInterested at time of ShowingComplete.</div></div>
   </div>
-  <div class="card-sys" style="margin-top:10px;">
-    <div class="card-sys-title">📬 Follow-Up Cadences by Stage</div>
-    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Pre-showing</b> (New / Contacted / ShowingDesired) — up to <em>3 SMS nudges</em>: ~24h → 20h → 24h → final 48h. If no reply → marked <em>Unresponsive</em>, follow-ups stop.</div></div>
-    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Incomplete Application</b> — up to <em>4 SMS over ~3 days</em>: +6h → +18h → +24h → +24h. Messages are personalized to the section they dropped off on. Final: <em>"I'll go ahead and close out your file."</em></div></div>
-    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Post-Showing — App Link Sent</b> — up to <em>3 SMS</em>. Auto-send: first ~4h after showing, then +24h, +48h → Unresponsive. Manual-send: first ~24h after agent sends, then same chain.</div></div>
-    <div class="sys-row"><span class="sys-icon">4️⃣</span><div class="sys-text"><b>Post-Showing — Still Deciding</b> — up to <em>3 SMS</em>: ~18h after showing → +48h → +40h → Unresponsive.</div></div>
-    <div class="sys-row"><span class="sys-icon">5️⃣</span><div class="sys-text"><b>Failed / Missed / Canceled Showing</b> — <em>1–2 reschedule nudges</em>: immediate link → +24h if no rebook → stops.</div></div>
-    <div class="sys-row"><span class="sys-icon">🔔</span><div class="sys-text"><b>Showing Reminders</b> — separate from follow-ups. <em>Accompanied:</em> confirmation SMS 180min before, auto-cancel 90min before if unconfirmed. <em>Self-guided:</em> link 1h before, never auto-canceled. All reminders clamped to <em>8am–8pm local time</em>.</div></div>
-    <div class="sys-row"><span class="sys-icon">🛑</span><div class="sys-text"><b>Follow-ups stop immediately</b> when status hits: <em>NotInterested, Withdrawn, Unresponsive, Blocklist, AppRejected, AppApproved, LeaseSigned, MovedIn, DuplicateLead, UnitUnavailable.</em> Also pause if prospect replied within last 32h or unit is On Hold.</div></div>
+  <div class="nr"><button class="bb" onclick="goTo('cc')">← Back</button><button class="bn" onclick="goTo('cc2b')">Next: Follow-Up Cadences →</button></div>
+</div>
+
+<!-- ══ CC 2B — FOLLOW-UP CADENCES ══ -->
+<div class="sc" id="sc-cc2b">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (3/6)</span></div><h2 class="st">Automated Follow-Up Cadences</h2><p class="ss">Each stage of the leasing journey has its own sequence. Here's exactly what prospects receive and when.</p></div>
+  <div class="card-sys">
+    <div class="card-sys-title">📬 Stage-by-Stage Follow-Up Sequences</div>
+
+    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text">
+      <b>Pre-Showing</b> — New / Contacted / ShowingDesired<br>
+      <span style="color:rgba(255,255,255,.5);font-size:11px;">Up to 3 SMS nudges · Greeting + scheduling link → nudge → "still interested?"</span><br>
+      <code style="font-size:10px;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;color:var(--orange2);">~24h → 20h → 24h → 48h → Unresponsive</code>
+    </div></div>
+
+    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text">
+      <b>Incomplete Application</b> — Application Started but not submitted<br>
+      <span style="color:rgba(255,255,255,.5);font-size:11px;">Up to 4 SMS · Personalized to the section they dropped off · Final: "I'll close out your file."</span><br>
+      <code style="font-size:10px;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;color:var(--orange2);">+6h → +18h → +24h → +24h → Unresponsive</code>
+    </div></div>
+
+    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text">
+      <b>Post-Showing: Application Link Sent</b><br>
+      <span style="color:rgba(255,255,255,.5);font-size:11px;">Up to 3 SMS · Auto-send: first ~4h after showing · Manual-send: first ~24h after agent sends</span><br>
+      <code style="font-size:10px;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;color:var(--orange2);">+4h → +24h → +48h → Unresponsive</code><br>
+      <span style="color:rgba(255,255,255,.4);font-size:10px;">Suppressed if prospect already has a qualifying application on file.</span>
+    </div></div>
+
+    <div class="sys-row"><span class="sys-icon">4️⃣</span><div class="sys-text">
+      <b>Post-Showing: Still Deciding</b><br>
+      <span style="color:rgba(255,255,255,.5);font-size:11px;">Up to 3 SMS</span><br>
+      <code style="font-size:10px;background:rgba(255,255,255,.08);padding:2px 6px;border-radius:4px;color:var(--orange2);">~18h → +48h → +40h → Unresponsive</code>
+    </div></div>
+
+    <div class="sys-row"><span class="sys-icon">5️⃣</span><div class="sys-text">
+      <b>Post-Showing: Failed / Missed / Canceled</b><br>
+      <span style="color:rgba(255,255,255,.5);font-size:11px;">1–2 reschedule nudges · Immediate link → +24h if no rebook → stops</span>
+    </div></div>
   </div>
+
   <div class="card-sys" style="margin-top:10px;">
-    <div class="card-sys-title">🔕 Statuses That Receive No Automated Messages</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;">
+    <div class="card-sys-title">🔔 Showing Reminders (separate from follow-ups)</div>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:11px;color:rgba(255,255,255,.75);">
+        <thead>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.12);">
+            <th style="text-align:left;padding:6px 8px;color:var(--orange);font-size:10px;text-transform:uppercase;letter-spacing:.6px;">Method</th>
+            <th style="text-align:left;padding:6px 8px;color:var(--orange);font-size:10px;text-transform:uppercase;letter-spacing:.6px;">Day-before reminder</th>
+            <th style="text-align:left;padding:6px 8px;color:var(--orange);font-size:10px;text-transform:uppercase;letter-spacing:.6px;">Upcoming reminder</th>
+            <th style="text-align:left;padding:6px 8px;color:var(--orange);font-size:10px;text-transform:uppercase;letter-spacing:.6px;">Auto-cancel?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+            <td style="padding:7px 8px;font-weight:600;color:#fff;">Accompanied</td>
+            <td style="padding:7px 8px;">Morning → 7pm prior day<br>Afternoon → 8am same day</td>
+            <td style="padding:7px 8px;">Default 2h before</td>
+            <td style="padding:7px 8px;color:#FCA5A5;">Yes — 45min before if unconfirmed</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+            <td style="padding:7px 8px;font-weight:600;color:#fff;">Self-Guided</td>
+            <td style="padding:7px 8px;">Same as above</td>
+            <td style="padding:7px 8px;">1h before</td>
+            <td style="padding:7px 8px;color:#6EE7B7;">No</td>
+          </tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.06);">
+            <td style="padding:7px 8px;font-weight:600;color:#fff;">Remote Guided</td>
+            <td style="padding:7px 8px;">Same as above</td>
+            <td style="padding:7px 8px;">Default 2h before</td>
+            <td style="padding:7px 8px;color:#6EE7B7;">No</td>
+          </tr>
+          <tr>
+            <td style="padding:7px 8px;font-weight:600;color:#fff;">Remote + Gated</td>
+            <td style="padding:7px 8px;">Same as above</td>
+            <td style="padding:7px 8px;">Default 2h before</td>
+            <td style="padding:7px 8px;color:#6EE7B7;">No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sys-row" style="margin-top:8px;"><span class="sys-icon">⚡</span><div class="sys-text"><b>Auto-confirm:</b> Self-guided and remote showings booked within <em>3 hours</em> of tour time auto-confirm and skip the upcoming reminder.</div></div>
+  </div>
+
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">🕐 Quiet Hours & Pause Rules</div>
+    <div class="sys-row"><span class="sys-icon">🌙</span><div class="sys-text">All follow-ups clamped to <b>8am – 8pm</b> property local time. Messages outside this window push to 8am the next valid day (skipping weekends if enabled).</div></div>
+    <div class="sys-row"><span class="sys-icon">⏸️</span><div class="sys-text">Follow-ups <b>pause automatically</b> if: unit is On Hold, or prospect replied to any message within the last <em>32 hours</em>.</div></div>
+    <div class="sys-row"><span class="sys-icon">🛑</span><div class="sys-text"><b>Follow-ups stop permanently</b> when status hits: Not Interested, Withdrawn, Unresponsive, Blocklist, App Rejected, App Approved, Lease Signed, Moved In, Duplicate Lead, Unit of Interest Unavailable.</div></div>
+  </div>
+
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">🔕 Statuses Silent Across All Main Workflows</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;">
       <div class="status-chip sc-skip">Application Approved</div>
       <div class="status-chip sc-skip">Application Rejected</div>
       <div class="status-chip sc-skip">Lease Signed</div>
@@ -883,14 +1024,14 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
       <div class="status-chip sc-partial">Unit of Interest Unavailable</div>
     </div>
     <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.4);">🔴 Red = silent across all workflows &nbsp;·&nbsp; 🟡 Yellow = partial exclusions only</div>
-    <div class="sys-row" style="margin-top:8px;"><span class="sys-icon">⚠️</span><div class="sys-text">Exception: <b>Self-guided auto-complete SMS</b> ("So how did you like it?") fires for <em>any</em> status — no gating. Showing reminders also send regardless of later status changes.</div></div>
+    <div class="sys-row" style="margin-top:8px;"><span class="sys-icon">⚠️</span><div class="sys-text"><b>Exception:</b> Self-guided auto-complete SMS fires for <em>any</em> status. Showing reminders send regardless of later status changes unless the showing is canceled.</div></div>
   </div>
-  <div class="nr"><button class="bb" onclick="goTo('cc')">← Back</button><button class="bn" onclick="goTo('cc3')">Next →</button></div>
+  <div class="nr"><button class="bb" onclick="goTo('cc2')">← Back</button><button class="bn" onclick="goTo('cc3')">Next →</button></div>
 </div>
 
 <!-- ══ CC 3 ══ -->
 <div class="sc" id="sc-cc3">
-  <div class="sh"><div class="se">Module 3 — Command Center <span>· (3/5)</span></div><h2 class="st">RentEngine AI & Snippets</h2></div>
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (4/6)</span></div><h2 class="st">RentEngine AI & Snippets</h2></div>
   <div class="card"><div class="cl">
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Go to <strong>Settings › Communication › RentEngine AI</strong> — explain what it pulls from</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Snippets</strong> — non-property-specific Q&A, format as question + answer</div></div></div>
@@ -911,18 +1052,34 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Goes to human forwarding</b> when the caller has a prospect in: ShowingScheduled, ShowingConfirmed, AppReceived/Approved/Rejected, LeaseSigned, MovedIn, PrescreenApproved/Rejected, HOA statuses.</div></div>
     <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text"><b>Important:</b> Voice AI checks <em>all</em> of a caller's recent prospects (last 60 days). Think of it like a bouncer with a list — if <em>any one</em> of their open cases is in a "no AI" status (like ShowingScheduled or AppReceived), the entire call goes to a human — even if the other prospects would qualify. It only takes one.</div></div>
   </div>
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">🧠 What the AI Knows — and What It Doesn't</div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Unit data it can answer from:</b> address, beds/baths, sqft, rent, status, showing method & windows, earliest move-in/showing dates, utilities, amenities, pet policy & fees, parking, laundry, HOA, application fee, deposit, move-in/monthly fees, specials, marketing description, prescreen rules (income multiplier, credit score threshold, voucher acceptance — thresholds only, not results).</div></div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Account context:</b> company name, office address, phone, email, office hours, fair housing guidelines, leasing URL, tone & custom AI instructions.</div></div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Prospect context:</b> name, phone, email, prior units of interest, upcoming showings (time, status, unit, method).</div></div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Application status</b> (RE Applications only): Draft/Submitted/Approved status, whether reference checks and screening reports are complete/pending — <em>status strings only</em>, not scores or contents.</div></div>
+    <div style="height:1px;background:rgba(255,255,255,.08);margin:10px 0;"></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Internal PM notes</b> — never surfaced to AI.</div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Application documents</b> — paystubs, W2s, bank statements, IDs are processed by a separate document-extraction AI, not the conversational AI.</div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Screening report contents</b> — no credit scores, criminal records, eviction details. Only completion status ("completed" / "pending").</div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Reference check responses</b> — AI knows which references are pending/complete, but not what they said.</div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Rejection reasons / adverse action letters</b> — AI has no visibility into approval/deny audit trail or internal workflow steps. Adverse action letters are accessed through the application itself in the Command Center, not through AI.</div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Lockbox codes</b> — AI knows if a showing is self-guided, but actual access codes are sent via SMS link and never read aloud by AI.</div></div>
+    <div class="sys-row"><span class="sys-icon">💡</span><div class="sys-text"><b>Key distinction:</b> AI gets <em>public-facing property data</em> + <em>high-level application pipeline status</em>. It never sees <em>private applicant data</em> — documents, scores, report contents, or notes.</div></div>
+  </div>
   <div class="nr"><button class="bb" onclick="goTo('cc2')">← Back</button><button class="bn" onclick="goTo('cc4')">Next →</button></div>
 </div>
 
 <!-- ══ CC 4 ══ -->
 <div class="sc" id="sc-cc4">
-  <div class="sh"><div class="se">Module 3 — Command Center <span>· (4/5)</span></div><h2 class="st">Inbound Calls & Actions</h2></div>
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (5/6)</span></div><h2 class="st">Inbound Calls & Actions</h2></div>
   <div class="card"><div class="cl">
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain inbound calls — browser ring vs. forwarding number; <strong>Do Not Disturb</strong> (browser and phone app independently)</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Offer to explain <strong>AI Calls</strong> if interested</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Send Scheduling Link</strong> — prospect goes through Prescreening Flow first</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Schedule Showing</strong> — bypasses prescreening, books directly</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Schedule a showing manually using yourself — walk through live</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Explain best practices for completing a showing</div><div class="ci-s">Phone app: open the showing → tap <strong>Start Showing</strong> → complete the feedback form → select next steps → <strong>Mark Complete</strong>. If no action taken, the system auto-completes and sends the application link 1 hour after the showing.</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Briefly walk through remaining actions (send application, change status, add note)</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Blocklist</strong> — block abusive prospects from scheduling future showings</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For large teams — explain <strong>Sub-Teams</strong> and how they route communication per property</div></div></div>
@@ -940,7 +1097,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 
 <!-- ══ CC 5 — Showing Methods ══ -->
 <div class="sc" id="sc-cc5">
-  <div class="sh"><div class="se">Module 3 — Command Center <span>· (5/5)</span></div><h2 class="st">Showing Methods — Overview</h2><p class="ss">All showings can be manually scheduled, reassigned, rescheduled, and cancelled from the Command Center at any time.</p></div>
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (6/6)</span></div><h2 class="st">Showing Methods — Overview</h2><p class="ss">All showings can be manually scheduled, reassigned, rescheduled, and cancelled from the Command Center at any time.</p></div>
   <div class="card-sys">
     <div class="card-sys-title">📋 5 Showing Methods at a Glance</div>
     <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Accompanied</b> — Agent meets prospect in person. Availability from agent's personal showing windows. Smart Assign scores available agents per slot. Prospect receives SMS with reschedule link + optional meeting location.</div></div>
@@ -958,10 +1115,10 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   <div class="card"><div class="cl">
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain color coding — walk through what each color represents and show the legend</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Mention <strong>Block Times</strong> — how to block off times to prevent showings from being scheduled</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Log into phone app if time allows — show how a showing looks there</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Click a showing — show what the agent sees</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <span class="tag twarn">⚠️</span> Do NOT click "Confirm Showing" — that's for the prospect</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Start Showing</strong> → feedback form → send application link directly</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Log into phone app if time allows — show how a showing looks there</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Click a showing — show what the agent sees</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <span class="tag twarn">⚠️</span> Do NOT click "Confirm Showing" — that's for the prospect</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Start Showing</strong> → feedback form → send application link directly</div></div></div>
   </div></div>
   <div class="nr"><button class="bb" onclick="goTo('cc5')">← Back</button><button class="bn" onclick="goTo('calendar2')">Next →</button></div>
 </div>
@@ -970,7 +1127,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 <div class="sc" id="sc-calendar2">
   <div class="sh"><div class="se">Module 3 — Command Center <span>· Showings Calendar (2/2)</span></div><h2 class="st">Self-Guided & Wrap-up</h2></div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Click on a showing — show options (access code, contact prospect, cancel)</div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Click on a showing — show options (access code, contact prospect, cancel)</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Cancel the test showing — show red color and how canceled showings may be hidden</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the full color-code legend</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">If RentEngine Apps</span> Go to <strong>Settings › Rental App Templates</strong> and walk through the template</div></div></div>
@@ -989,18 +1146,60 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the Intelligence tabs — conversion, occupancy, leasing performance</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Syndication Status</strong> — report issues with Zillow or any listing site</div></div></div>
   </div></div>
-  <div class="nr"><button class="bb" onclick="goTo('calendar2')">← Back</button><button class="bn" onclick="goTo('support')">Next: Support & Wrap-up →</button></div>
+  <div class="nr"><button class="bb" onclick="goTo('calendar2')">← Back</button><button class="bn" onclick="afterReports()">Next →</button></div>
 </div>
 
-<!-- ══ SUPPORT ══ -->
-<div class="sc" id="sc-support">
-  <div class="sh"><div class="se">Module 4 — Reports <span>· Support & Wrap-up</span></div><h2 class="st">Support & Next Steps</h2></div>
+<!-- ══ RE APPS 1 ══ -->
+<div class="sc" id="sc-reapps">
+  <div class="sh">
+    <div class="se">Module 4 — Reports <span>· RE Applications (1/2)</span></div>
+    <h2 class="st">RentEngine Applications — Templates</h2>
+    <p class="ss">Settings › Rental Applications › Templates — walk through setup if the client will use RE's application module.</p>
+  </div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Point out the <strong>chat widget</strong> at the bottom right — real team, including weekends</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show <strong>RentEngine University</strong> — self-serve training and help articles</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Schedule <strong>Week 1 Check-In</strong> — put a date on the calendar before ending the call</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Go to <strong>Settings › Rental Applications › Templates</strong></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Create a new template — enter name, description, set as default if applicable</div><div class="ci-s">Click New Template → fill in → Save. Templates can be duplicated or deleted from the list.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Pricing tab</strong> — set the application fee amount and fee name (Application fee or Screening fee)</div><div class="ci-s">Can also create coupon codes with percent or flat discounts, expiration dates, and usage limits</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Reports tab</strong> — configure background check level and income verification</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Options <span class="arr">▼</span></button><div class="spb"><p><b>Background check:</b> No check / TransUnion standard (credit, credit+criminal, bundles) / TransUnion IP (credit+criminal+eviction — requires TransUnion Property ID, they'll contact you). <br><br><b>Screening trigger:</b> Auto on submission / Auto only if no pending apps / Manual.<br><br><b>Income verification:</b> Off / Optional / Alternative Required / Required. Can add instructions, min doc count, PDF-only restriction, OCR.</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>References tab</strong> — set employment and housing history required (0–96 months each)</div><div class="ci-s">Can enable automated questionnaires sent to employers and landlords</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Custom settings tab</strong> — add custom questions (Short Text, Long Text, Select, Checkboxes) and custom document requests</div></div></div>
   </div></div>
-  <div class="nr"><button class="bb" onclick="goTo('reports')">← Back</button><button class="bn" onclick="goTo('data')">Next: Data Extraction →</button></div>
+  <div class="nr"><button class="bb" onclick="goTo('reports')">← Back</button><button class="bn" onclick="goTo('reapps2')">Next →</button></div>
+</div>
+
+<!-- ══ RE APPS 2 ══ -->
+<div class="sc" id="sc-reapps2">
+  <div class="sh">
+    <div class="se">Module 4 — Reports <span>· RE Applications (2/2)</span></div>
+    <h2 class="st">RE Applications — Automation, Permissions & Assignment</h2>
+  </div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Terms & Conditions tab</strong> — add a custom disclaimer appended to the standard RentEngine terms</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Automation tab</strong> — set post-submission message, customize approve/reject/info-request emails, and owner decision emails</div><div class="ci-s">Email templates support variables like {{first_name}} and {{property_address}}</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Team Workflows tab</strong> — create a default task list that auto-generates when an application is submitted</div><div class="ci-s">Each task has a name, assignee (team member or subteam), and optional notes</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Permissions tab</strong> — control who can view, approve/reject, issue refunds, manage coupons, or admin the template</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>PMS Sync tab</strong> (Admins only) — configure how completed applications sync back to the PMS</div><div class="ci-s">If PMS doesn't support direct sync, use the Extension for one-click sync of approved applications</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Assign template to a unit</strong> — Properties → Take Action → Edit Property → final page → Prescreen Template dropdown → Finish</div><div class="ci-s">If no template assigned, the unit uses the account's default template</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('reapps')">← Back</button><button class="bn" onclick="goTo('chat-support')">Next: Chat Support →</button></div>
+</div>
+
+<!-- ══ CHAT SUPPORT ══ -->
+<div class="sc" id="sc-chat-support">
+  <div class="sh">
+    <div class="se" style="display:flex;align-items:center;gap:8px;">
+      <span style="background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.5px;">MANDATORY</span>
+      Wrap-up
+    </div>
+    <h2 class="st">Chat Support & RentEngine University</h2>
+    <p class="ss">Show these before the call ends — every client needs to know where to get help.</p>
+  </div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Point out the <strong>chat widget</strong> at the bottom right of the platform</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Anytime you have a question, hit the chat button at the bottom right. Our team is always there — including weekends. It's a real person, not a bot."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show <strong>RentEngine University</strong> — self-serve training articles and help guides</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Confirm they know how to reach you directly if needed</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="backFromChatSupport()">← Back</button><button class="bn" onclick="goTo('checkin')">Next: Week 1 Check-In →</button></div>
 </div>
 
 <!-- ══ DATA ══ -->
@@ -1009,9 +1208,9 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   <div class="ib am"><strong>⚠️ Stop recording</strong> before starting — do this naturally, without announcing it.</div>
   <div class="card"><div class="cl">
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain what's being collected — unit data, leads, scheduled showings</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Last part — we'll collect what's needed to activate your units, import existing leads, and transfer any already-scheduled showings. We'll send a confirmation email with next steps once everything is done."</p></div></div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Collect lockbox info — model, serial number, location per unit</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Confirm which agents are assigned to which properties</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> If Sub-Teams — collect sub-team assignments per property</div></div></div>
+    <div class="ci ci-sg" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Collect lockbox info — model, serial number, location per unit</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Confirm which agents are assigned to which properties</div></div></div>
+    <div class="ci ci-ac" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> If Sub-Teams — collect sub-team assignments per property</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">If no showing system — ask how to get unit activation info</div></div></div>
   </div></div>
   <div class="card-sys" style="margin-top:12px;">
@@ -1021,7 +1220,25 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sys-row"><span class="sys-icon">📊</span><div class="sys-text"><b>ShowMojo:</b> Reports › Other Reports › Detailed Prospect Data</div></div>
     <div class="sys-row"><span class="sys-icon">📅</span><div class="sys-text">Also extract any <b>already-scheduled showings</b> to import.</div></div>
   </div>
-  <div class="nr"><button class="bb" onclick="goTo('support')">← Back</button><button class="bn" onclick="goTo('done')">Finish Session →</button></div>
+  <div class="nr"><button class="bb" onclick="goTo('checkin')">← Back</button><button class="bn" onclick="goTo('done')">Finish Session →</button></div>
+</div>
+
+<!-- ══ WEEK 1 CHECK-IN ══ -->
+<div class="sc" id="sc-checkin">
+  <div class="sh">
+    <div class="se" style="display:flex;align-items:center;gap:8px;">
+      <span style="background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;letter-spacing:.5px;">MANDATORY</span>
+      Wrap-up
+    </div>
+    <h2 class="st">Schedule Week 1 Check-In</h2>
+    <p class="ss">Do not end the call without a date confirmed on both calendars.</p>
+  </div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Propose a specific date and time for the Week 1 Check-In</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Before we wrap up — let's lock in a follow-up. I'm thinking <span class="kw">[specific day + time]</span> — does that work for you? We'll check in on how everything is going, answer any questions, and make sure you're fully up and running."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Send calendar invite before ending the call</div><div class="ci-s">Don't just say "I'll send it later" — send it now while they're on the call</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Remind them: if questions come up before the check-in, use the chat widget — don't wait</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('chat-support')">← Back</button><button class="bn" onclick="goTo('data')">Next: Data Extraction →</button></div>
 </div>
 
 <!-- ══ DONE ══ -->
@@ -1066,15 +1283,85 @@ const SECS={
   notifications:['notifications'],
   lockboxes:['lockboxes'],
   properties:['properties','properties2','properties3','properties4','properties5','properties6'],
-  cc:['cc','cc2','cc3','cc4','cc5'],
+  cc:['cc','cc2','cc2b','cc3','cc4','cc5'],
   calendar:['calendar','calendar2'],
   reports:['reports'],
-  support:['support'],
+  reapps:['reapps','reapps2'],
+  'chat-support':['chat-support'],
+  checkin:['checkin'],
   data:['data'],
   done:['done']
 };
 const S2S={};
 Object.entries(SECS).forEach(([s,ss])=>ss.forEach(id=>S2S[id]=s));
+
+let useReApps=false;
+function setReApps(val){
+  useReApps=val;
+  const lbl=document.getElementById('mo-reapps');
+  const chk=document.getElementById('reapps-check');
+  if(lbl)lbl.classList.toggle('sel',val);
+  if(chk)chk.style.display=val?'inline':'none';
+}
+function afterReports(){goTo(useReApps?'reapps':'chat-support');}
+function backFromChatSupport(){goTo(useReApps?'reapps2':'reports');}
+
+// ── TIMER ──
+let timerInterval=null,timerSecs=0;
+const ALERTS=[
+  {at:20*60,type:'t-warn',icon:'⏰',title:'20 minutes in',body:'Module 1 (Settings) should be wrapping up. Move to Properties.'},
+  {at:30*60,type:'t-warn',icon:'⚠️',title:'30 min — you have 45 left',body:'You have 75 minutes total. Keep pace — Properties + Command Center still ahead.'},
+  {at:40*60,type:'t-warn',icon:'⏰',title:'40 minutes in',body:'Properties should be done. Moving into Command Center.'},
+  {at:55*60,type:'t-danger',icon:'🔴',title:'55 min — 20 minutes left',body:'Wrap up Command Center now. Reserve time for Q&A, Data Extraction & Week 1 Check-In.'},
+  {at:65*60,type:'t-danger',icon:'🚨',title:'65 min — 10 minutes left',body:'Data Extraction & Week 1 Check-In are mandatory. Do not skip them.'},
+  {at:75*60,type:'t-danger',icon:'🚨',title:'75 minutes reached',body:'Session time is up. Finish Data Extraction and confirm the Week 1 Check-In before ending.'},
+];
+const firedAlerts=new Set();
+
+function startTimer(){
+  timerSecs=0;firedAlerts.clear();
+  const el=document.getElementById('tn-timer');
+  const disp=document.getElementById('timer-display');
+  el.className='tn-timer running';
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    timerSecs++;
+    const m=Math.floor(timerSecs/60),s=timerSecs%60;
+    disp.textContent=m+':'+(s<10?'0':'')+s;
+    // color state
+    if(timerSecs>=55*60)el.className='tn-timer running danger';
+    else if(timerSecs>=30*60)el.className='tn-timer running warn';
+    else el.className='tn-timer running';
+    // fire alerts
+    ALERTS.forEach(a=>{
+      if(timerSecs>=a.at&&!firedAlerts.has(a.at)){
+        firedAlerts.add(a.at);
+        showToast(a.icon,a.title,a.body,a.type);
+      }
+    });
+  },1000);
+}
+
+function stopTimer(){
+  if(timerInterval)clearInterval(timerInterval);
+  timerInterval=null;
+  const el=document.getElementById('tn-timer');
+  el.className='tn-timer';
+  document.getElementById('timer-display').textContent='0:00';
+}
+
+function showToast(icon,title,body,type){
+  const wrap=document.getElementById('toast-wrap');
+  const t=document.createElement('div');
+  t.className='toast '+(type||'');
+  t.innerHTML='<div class="toast-head"><span class="toast-icon">'+icon+'</span><span class="toast-title">'+title+'</span></div><div class="toast-body">'+body+'</div>';
+  wrap.appendChild(t);
+  // auto-dismiss after 8s
+  setTimeout(()=>{
+    t.classList.add('removing');
+    setTimeout(()=>t.remove(),350);
+  },8000);
+}
 
 function setMethod(m){method=m;document.querySelectorAll('.mo').forEach(e=>e.classList.remove('sel'));document.getElementById('mo-'+m).classList.add('sel');document.getElementById('btn-start').disabled=false;}
 function startChecklist(){
@@ -1084,10 +1371,20 @@ function startChecklist(){
   const isSG=method==='sg'||method==='both';
   if(!isAC)document.getElementById('sb-personal-avail').style.display='none';
   if(!isSG)document.getElementById('sb-lockboxes').style.display='none';
+  // Apply method class to main for conditional item visibility
+  const main=document.getElementById('main');
+  main.classList.remove('method-ac','method-sg','method-both');
+  main.classList.add('method-'+method);
+  // RE Apps sidebar
+  const reappsSb=document.getElementById('sb-reapps');
+  const reappsAcc=document.getElementById('acc-reapps');
+  if(reappsSb)reappsSb.style.display=useReApps?'':'none';
+  if(reappsAcc)reappsAcc.style.display=useReApps?'':'none';
+  startTimer();
   goTo('welcome');
 }
 // Sections that have accordion sub-items
-const ACC_SECS=['teams','company','personal-avail','showings-co','prescreening','properties','cc','calendar'];
+const ACC_SECS=['teams','company','personal-avail','showings-co','prescreening','properties','cc','calendar','reapps'];
 
 function goTo(id){
   document.querySelectorAll('.sc').forEach(s=>s.classList.remove('vis'));
@@ -1234,13 +1531,17 @@ function backFromShowingsCo3(){goTo((method==='ac'||method==='both')?'showings-c
 function afterNotif(){goTo((method==='sg'||method==='both')?'lockboxes':'properties');}
 function backFromProperties(){goTo((method==='sg'||method==='both')?'lockboxes':'notifications');}
 function resetAll(){
+  stopTimer();
+  useReApps=false;
+  setReApps(false);
+  document.getElementById('main').classList.remove('method-ac','method-sg','method-both');
   method=null;
   document.querySelectorAll('.ci').forEach(e=>e.classList.remove('ck'));
   document.querySelectorAll('.spb').forEach(e=>e.classList.remove('op'));
   document.querySelectorAll('.spt').forEach(e=>e.classList.remove('op'));
   document.querySelectorAll('.mo').forEach(e=>e.classList.remove('sel'));
   document.getElementById('btn-start').disabled=true;
-  document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('done','active');const rel=['sb-welcome','sb-teams','sb-company','sb-portfolio','sb-personal-avail','sb-showings-co','sb-prescreening','sb-notifications','sb-lockboxes','sb-properties','sb-cc','sb-calendar','sb-reports','sb-support','sb-data','sb-done'];if(rel.includes(e.id))e.classList.add('hi');});
+  document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('done','active');const rel=['sb-welcome','sb-teams','sb-company','sb-portfolio','sb-personal-avail','sb-showings-co','sb-prescreening','sb-notifications','sb-lockboxes','sb-properties','sb-cc','sb-calendar','sb-reports','sb-reapps','sb-chat-support','sb-checkin','sb-data','sb-done'];if(rel.includes(e.id))e.classList.add('hi');});
   document.querySelectorAll('[id^="sbc-"]').forEach(e=>{e.style.background='';e.style.borderColor='';e.style.color='transparent';});
   ['sb-personal-avail','sb-lockboxes'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
   document.querySelectorAll('.sb-acc').forEach(a=>a.classList.remove('open'));
