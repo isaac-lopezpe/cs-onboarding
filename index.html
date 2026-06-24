@@ -1,1 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RentEngine — Onboarding Checklist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F1F3D;--navy2:#1A1A1A;--black:#111111;
+  --orange:#F26522;--orange2:#FF8A4A;--opale:#FEF0E8;
+  --g50:#F7F8FA;--g100:#EEF0F4;--g200:#D8DCE6;--g400:#8A93A8;--g600:#4A5568;--g800:#1A202C;
+  --green:#10B981;--gpale:#ECFDF5;--gdark:#065F46;
+  --amber:#F59E0B;--apale:#FFFBEB;--blue:#3B82F6;--bpale:#EFF6FF;
+  --red:#EF4444;--rpale:#FEF2F2;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(--g800);background:var(--g50);}
 
+/* NAV */
+.topnav{position:fixed;top:0;left:0;right:0;height:56px;background:#0A0A0A;display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.5);}
+.tn-brand{display:flex;align-items:center;gap:12px;}
+.tn-logo{height:28px;width:auto;display:block;}
+.tn-tag{color:rgba(255,255,255,.35);font-size:11px;border-left:1px solid rgba(255,255,255,.15);padding-left:12px;margin-left:4px;}
+.tn-right{display:flex;align-items:center;gap:12px;}
+.tn-prog{color:rgba(255,255,255,.5);font-size:12px;}
+.tn-prog b{color:var(--orange2);}
+.btn-reset{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s;}
+.btn-reset:hover{background:rgba(255,255,255,.15);color:#fff;}
+
+/* PROGRESS */
+.pgwrap{position:fixed;top:56px;left:240px;right:0;height:3px;background:rgba(255,255,255,.08);z-index:199;}
+.pgbar{height:100%;background:var(--orange);transition:width .4s;}
+
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 56px);margin-top:56px;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:240px;flex-shrink:0;background:var(--navy2);overflow-y:auto;padding:16px 0;}
+.sidebar::-webkit-scrollbar{width:4px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+.sb-gl{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.25);padding:12px 16px 4px;}
+.sb-div{height:1px;background:rgba(255,255,255,.07);margin:8px 16px;}
+.sb-item{display:flex;align-items:center;border-left:2px solid transparent;font-size:12px;color:rgba(255,255,255,.45);transition:.2s;}
+.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75);}
+.sb-item.active{color:#fff;border-left-color:var(--orange);background:rgba(255,255,255,.08);}
+.sb-item.done .sb-dot{background:var(--green);}
+.sb-item.active .sb-dot{background:var(--orange);}
+.sb-item.hi{display:none;}
+.sb-nav{display:flex;align-items:center;gap:8px;flex:1;padding:8px 8px 8px 16px;min-width:0;cursor:pointer;}
+.sb-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:.2s;}
+.sb-label{flex:1;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-ck{width:32px;min-height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;opacity:0;transition:opacity .15s;border-left:1px solid rgba(255,255,255,.07);}
+.sb-item:hover .sb-ck,.sb-item.done .sb-ck{opacity:1;}
+.sb-cc{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent;background:transparent;transition:.2s;}
+.sb-item.done .sb-cc{background:var(--green);border-color:var(--green);color:#fff;}
+.sb-ck:hover .sb-cc{border-color:rgba(255,255,255,.6);}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;padding:32px 40px 60px;}
+.main::-webkit-scrollbar{width:5px;}
+.main::-webkit-scrollbar-thumb{background:var(--g200);border-radius:3px;}
+
+/* SCREENS */
+.sc{display:none;max-width:680px;animation:fu .25s ease;}
+.sc.vis{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* STEP HEADER */
+.sh{margin-bottom:18px;}
+.se{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:5px;}
+.se span{color:var(--g400);font-weight:400;font-size:10px;margin-left:4px;}
+.st{font-size:20px;font-weight:700;color:var(--navy);line-height:1.25;margin-bottom:4px;}
+.ss{font-size:13px;color:var(--g600);line-height:1.65;}
+
+/* CARDS */
+.card{background:#fff;border-radius:14px;border:1px solid var(--g100);padding:20px 22px;}
+/* BLACK SYSTEM INFO CARD */
+.card-sys{background:var(--black);border-radius:14px;padding:18px 20px;margin-top:12px;}
+.card-sys-title{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.sys-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);margin-bottom:6px;}
+.sys-row:last-child{margin-bottom:0;}
+.sys-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.sys-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+.sys-text b{color:#fff;}
+.sys-text em{color:var(--orange2);font-style:normal;font-weight:600;}
+.sys-badge{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;vertical-align:middle;}
+.sb-yes{background:rgba(16,185,129,.2);color:#6EE7B7;}
+.sb-no{background:rgba(239,68,68,.18);color:#FCA5A5;}
+.sb-warn{background:rgba(245,158,11,.2);color:#FCD34D;}
+.sb-gray{background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);}
+
+/* STATUS GRID in black cards */
+.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+.status-chip{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;text-align:center;}
+.sc-active{background:rgba(16,185,129,.15);color:#6EE7B7;border:1px solid rgba(16,185,129,.2);}
+.sc-skip{background:rgba(239,68,68,.12);color:#FCA5A5;border:1px solid rgba(239,68,68,.15);}
+.sc-partial{background:rgba(245,158,11,.12);color:#FCD34D;border:1px solid rgba(245,158,11,.15);}
+
+/* CHECKLIST */
+.cl{display:flex;flex-direction:column;gap:6px;}
+.ci{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:9px;border:1px solid var(--g100);background:var(--g50);cursor:pointer;transition:.2s;user-select:none;}
+.ci:hover{background:var(--g100);}
+.ci.ck{background:var(--gpale);border-color:#A7F3D0;}
+.cb{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--g200);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;background:#fff;transition:.2s;color:transparent;}
+.ci.ck .cb{background:var(--green);border-color:var(--green);color:#fff;}
+.ci-b{flex:1;}
+.ci-t{font-size:13px;color:var(--g800);line-height:1.5;font-weight:500;}
+.ci.ck .ci-t{color:var(--g400);text-decoration:line-through;}
+.ci-s{font-size:11px;color:var(--g400);margin-top:2px;line-height:1.4;font-style:italic;}
+.tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:10px;font-weight:600;margin-right:4px;vertical-align:middle;}
+.tac{background:#EDF1F8;color:var(--navy);}
+.tsg{background:#F5F3FF;color:#5B21B6;}
+.tall{background:var(--gpale);color:var(--gdark);}
+.twarn{background:var(--apale);color:#92400E;}
+.tred{background:var(--rpale);color:#991B1B;}
+
+/* HIGHLIGHT PILL */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.pill-orange{background:var(--opale);color:#9A3F0A;border:1px solid #FBBF8B;}
+.pill-green{background:var(--gpale);color:var(--gdark);border:1px solid #A7F3D0;}
+.pill-red{background:var(--rpale);color:#991B1B;border:1px solid #FECACA;}
+
+/* SPEECH */
+.spw{margin-top:6px;}
+.spt{background:none;border:none;font-size:11px;font-weight:600;color:var(--orange);cursor:pointer;font-family:'Inter',sans-serif;padding:0;display:flex;align-items:center;gap:4px;}
+.spt .arr{transition:transform .2s;font-size:9px;}
+.spt.op .arr{transform:rotate(180deg);}
+.spb{display:none;margin-top:8px;background:var(--navy);border-radius:10px;padding:12px 15px;}
+.spb.op{display:block;}
+.spb p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.7;}
+.kw{background:rgba(242,101,34,.2);color:var(--orange2);padding:1px 5px;border-radius:4px;font-size:11px;font-weight:600;}
+
+/* INFO BOXES */
+.ib{border-left:3px solid var(--orange);background:var(--opale);border-radius:0 9px 9px 0;padding:11px 15px;font-size:12px;color:var(--g800);line-height:1.65;margin-bottom:14px;}
+.ib.am{background:var(--apale);border-color:var(--amber);}
+.ib.gr{background:var(--gpale);border-color:var(--green);}
+.ib.bl{background:var(--bpale);border-color:var(--blue);}
+.ib.dk{background:var(--black);border-color:var(--orange);color:rgba(255,255,255,.8);}
+
+/* QUESTION CARD */
+.q-card{background:linear-gradient(135deg,#1A3260 0%,#0F1F3D 100%);border-radius:12px;padding:16px 18px;margin-top:12px;border:1px solid rgba(242,101,34,.2);}
+.q-card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--orange);margin-bottom:10px;}
+.q-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;}
+.q-item:last-child{margin-bottom:0;}
+.q-num{width:20px;height:20px;border-radius:50%;background:var(--orange);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.q-text{font-size:12px;color:rgba(255,255,255,.8);line-height:1.5;}
+.q-text b{color:#fff;}
+
+/* GATE */
+.gate-sub{font-size:13px;color:var(--g600);line-height:1.7;margin-bottom:16px;}
+.mg{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0 20px;}
+.mo{border:1.5px solid var(--g200);border-radius:12px;padding:14px 18px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:14px;background:#fff;}
+.mo:hover{border-color:var(--orange);box-shadow:0 0 0 3px var(--opale);}
+.mo.sel{border-color:var(--orange);background:var(--opale);}
+.mo-ico{font-size:20px;flex-shrink:0;}
+.mo-lbl{font-size:14px;font-weight:600;color:var(--navy);}
+.mo-desc{font-size:12px;color:var(--g600);margin-top:2px;}
+.btn-start{background:var(--orange);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;width:100%;transition:.2s;}
+.btn-start:hover{background:var(--orange2);}
+.btn-start:disabled{opacity:.4;cursor:not-allowed;}
+
+/* NAV ROW */
+.nr{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+.bb{background:none;border:1px solid var(--g200);color:var(--g600);padding:9px 18px;border-radius:8px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s;}
+.bb:hover{border-color:var(--g400);}
+.bn{background:var(--orange);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:.2s;}
+.bn:hover{background:var(--orange2);}
+
+/* ROLE TABLE */
+.rt{width:100%;border-collapse:collapse;font-size:12px;}
+.rt th{text-align:left;padding:7px 11px;background:var(--g50);color:var(--g400);font-weight:600;font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--g100);}
+.rt td{padding:8px 11px;border-bottom:1px solid var(--g100);vertical-align:top;line-height:1.5;}
+.rt tr:last-child td{border-bottom:none;}
+
+/* AVAIL VISUAL */
+.av{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0 8px;}
+.av-lbl{font-size:10px;font-weight:600;color:var(--g400);margin-bottom:3px;text-align:center;}
+.av-sl{display:flex;flex-direction:column;gap:2px;}
+.avs{border-radius:3px;height:18px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;}
+.avs.on{background:var(--navy);color:rgba(255,255,255,.8);}
+.avs.off{background:var(--g100);color:var(--g400);}
+.avs.pt{background:var(--opale);color:#9A3F0A;}
+.avs.locked{background:var(--rpale);color:var(--red);}
+
+/* AVAIL COMPARE */
+.av-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.av-panel{background:rgba(255,255,255,.06);border-radius:10px;padding:12px;border:1px solid rgba(255,255,255,.08);}
+.av-panel-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);margin-bottom:8px;}
+.av-panel-subtitle{font-size:10px;color:rgba(255,255,255,.4);margin-bottom:8px;}
+
+/* LOCKBOX BRANDS */
+.lb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;}
+.lb-card{background:rgba(255,255,255,.06);border-radius:8px;padding:12px 10px;text-align:center;border:1px solid rgba(255,255,255,.08);}
+.lb-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px;}
+.lb-detail{font-size:10px;color:rgba(255,255,255,.5);line-height:1.4;}
+
+/* COMPLETE */
+.cc{background:var(--navy);border-radius:18px;padding:40px;text-align:center;margin-bottom:16px;}
+.cc-ico{font-size:44px;margin-bottom:14px;}
+.cc-t{font-size:24px;font-weight:700;color:#fff;margin-bottom:8px;}
+.cc-s{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;max-width:420px;margin:0 auto 24px;}
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px;}
+.csi{background:rgba(255,255,255,.07);border-radius:10px;padding:14px 10px;text-align:center;}
+.csi-n{font-size:26px;font-weight:700;color:var(--orange2);}
+.csi-l{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;}
+.clb{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;border:none;transition:.2s;margin:4px;}
+.clp{background:var(--orange);color:#fff;}
+.clp:hover{background:var(--orange2);}
+.cls{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);}
+.cls:hover{background:rgba(255,255,255,.18);}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="tn-brand">
+    <img class="tn-logo" src="data:image/png;base64,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" alt="RentEngine">
+    <span class="tn-tag">Onboarding Checklist</span>
+  </div>
+  <div class="tn-right">
+    <span class="tn-prog">Progress: <b id="pct">0%</b></span>
+    <button class="btn-reset" onclick="resetAll()">↩ Reset</button>
+  </div>
+</nav>
+<div class="pgwrap"><div class="pgbar" id="pgbar" style="width:0%"></div></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sb-gl">Setup</div>
+  <div class="sb-item active" id="sb-gate"><div class="sb-nav" onclick="goTo('gate')"><span class="sb-dot"></span><span class="sb-label">Showing Method</span></div></div>
+  <div class="sb-div"></div>
+  <div class="sb-gl">Module 1 — Settings</div>
+  <div class="sb-item hi" id="sb-welcome"><div class="sb-nav" onclick="goTo('welcome')"><span class="sb-dot"></span><span class="sb-label">Welcome & Recording</span></div><div class="sb-ck" onclick="sbToggle('welcome')"><div class="sb-cc" id="sbc-welcome">✓</div></div></div>
+  <div class="sb-item hi" id="sb-teams"><div class="sb-nav" onclick="goTo('teams')"><span class="sb-dot"></span><span class="sb-label">Teams & Roles</span></div><div class="sb-ck" onclick="sbToggle('teams')"><div class="sb-cc" id="sbc-teams">✓</div></div></div>
+  <div class="sb-item hi" id="sb-company"><div class="sb-nav" onclick="goTo('company')"><span class="sb-dot"></span><span class="sb-label">Settings › Company</span></div><div class="sb-ck" onclick="sbToggle('company')"><div class="sb-cc" id="sbc-company">✓</div></div></div>
+  <div class="sb-item hi" id="sb-portfolio"><div class="sb-nav" onclick="goTo('portfolio')"><span class="sb-dot"></span><span class="sb-label">Settings › Portfolio</span></div><div class="sb-ck" onclick="sbToggle('portfolio')"><div class="sb-cc" id="sbc-portfolio">✓</div></div></div>
+  <div class="sb-item hi" id="sb-personal-avail"><div class="sb-nav" onclick="goTo('personal-avail')"><span class="sb-dot"></span><span class="sb-label">Personal Availability</span></div><div class="sb-ck" onclick="sbToggle('personal-avail')"><div class="sb-cc" id="sbc-personal-avail">✓</div></div></div>
+  <div class="sb-item hi" id="sb-showings-co"><div class="sb-nav" onclick="goTo('showings-co')"><span class="sb-dot"></span><span class="sb-label">Settings › Showings</span></div><div class="sb-ck" onclick="sbToggle('showings-co')"><div class="sb-cc" id="sbc-showings-co">✓</div></div></div>
+  <div class="sb-item hi" id="sb-prescreening"><div class="sb-nav" onclick="goTo('prescreening')"><span class="sb-dot"></span><span class="sb-label">Prescreening</span></div><div class="sb-ck" onclick="sbToggle('prescreening')"><div class="sb-cc" id="sbc-prescreening">✓</div></div></div>
+  <div class="sb-item hi" id="sb-notifications"><div class="sb-nav" onclick="goTo('notifications')"><span class="sb-dot"></span><span class="sb-label">Notifications</span></div><div class="sb-ck" onclick="sbToggle('notifications')"><div class="sb-cc" id="sbc-notifications">✓</div></div></div>
+  <div class="sb-item hi" id="sb-lockboxes"><div class="sb-nav" onclick="goTo('lockboxes')"><span class="sb-dot"></span><span class="sb-label">Lockboxes</span></div><div class="sb-ck" onclick="sbToggle('lockboxes')"><div class="sb-cc" id="sbc-lockboxes">✓</div></div></div>
+  <div class="sb-div"></div>
+  <div class="sb-gl">Module 2 — Properties</div>
+  <div class="sb-item hi" id="sb-properties"><div class="sb-nav" onclick="goTo('properties')"><span class="sb-dot"></span><span class="sb-label">Property Activation</span></div><div class="sb-ck" onclick="sbToggle('properties')"><div class="sb-cc" id="sbc-properties">✓</div></div></div>
+  <div class="sb-div"></div>
+  <div class="sb-gl">Module 3 — Command Center</div>
+  <div class="sb-item hi" id="sb-cc"><div class="sb-nav" onclick="goTo('cc')"><span class="sb-dot"></span><span class="sb-label">Command Center</span></div><div class="sb-ck" onclick="sbToggle('cc')"><div class="sb-cc" id="sbc-cc">✓</div></div></div>
+  <div class="sb-item hi" id="sb-calendar"><div class="sb-nav" onclick="goTo('calendar')"><span class="sb-dot"></span><span class="sb-label">Showings Calendar</span></div><div class="sb-ck" onclick="sbToggle('calendar')"><div class="sb-cc" id="sbc-calendar">✓</div></div></div>
+  <div class="sb-div"></div>
+  <div class="sb-gl">Module 4 — Reports</div>
+  <div class="sb-item hi" id="sb-reports"><div class="sb-nav" onclick="goTo('reports')"><span class="sb-dot"></span><span class="sb-label">Reports & Intelligence</span></div><div class="sb-ck" onclick="sbToggle('reports')"><div class="sb-cc" id="sbc-reports">✓</div></div></div>
+  <div class="sb-item hi" id="sb-support"><div class="sb-nav" onclick="goTo('support')"><span class="sb-dot"></span><span class="sb-label">Support & Wrap-up</span></div><div class="sb-ck" onclick="sbToggle('support')"><div class="sb-cc" id="sbc-support">✓</div></div></div>
+  <div class="sb-item hi" id="sb-data"><div class="sb-nav" onclick="goTo('data')"><span class="sb-dot"></span><span class="sb-label">Data Extraction</span></div><div class="sb-ck" onclick="sbToggle('data')"><div class="sb-cc" id="sbc-data">✓</div></div></div>
+  <div class="sb-div"></div>
+  <div class="sb-item hi" id="sb-done"><div class="sb-nav" onclick="goTo('done')"><span class="sb-dot"></span><span class="sb-label">Session Complete</span></div></div>
+</nav>
+
+<main class="main" id="main">
+
+<!-- ══ GATE ══ -->
+<div class="sc vis" id="sc-gate">
+  <div class="sh">
+    <div class="se">Before we start</div>
+    <h2 class="st">What showing methods will this client use?</h2>
+    <p class="gate-sub">This filters which sections appear in the checklist.</p>
+  </div>
+  <div class="mg">
+    <label class="mo" id="mo-ac"><input type="radio" name="method" value="ac" style="display:none" onchange="setMethod('ac')"><span class="mo-ico">👤</span><div><div class="mo-lbl">Accompanied only</div><div class="mo-desc">An agent is present for every showing</div></div></label>
+    <label class="mo" id="mo-sg"><input type="radio" name="method" value="sg" style="display:none" onchange="setMethod('sg')"><span class="mo-ico">🔑</span><div><div class="mo-lbl">Self-guided only</div><div class="mo-desc">Prospects access units independently via lockbox</div></div></label>
+    <label class="mo" id="mo-both"><input type="radio" name="method" value="both" style="display:none" onchange="setMethod('both')"><span class="mo-ico">🔀</span><div><div class="mo-lbl">Combination of both</div><div class="mo-desc">Some properties accompanied, some self-guided</div></div></label>
+  </div>
+  <button class="btn-start" id="btn-start" disabled onclick="startChecklist()">Start Checklist →</button>
+</div>
+
+<!-- ══ WELCOME ══ -->
+<div class="sc" id="sc-welcome">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Welcome</span></div><h2 class="st">Welcome & Kick-Off</h2><p class="ss">Set the tone before diving into the platform.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Introduce yourself as their Customer Success Manager</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Hi [Name], welcome! I'm <span class="kw">[Your Name]</span>, your Customer Success Manager — your main point of contact through onboarding and once you're live."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Introduce any co-workers on the call</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask if we should wait for anyone else</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask if they'd like the call recorded</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Confirm showing method with the client</div><div class="ci-s">Accompanied / Self-guided / Combination — verify it matches what was selected above</div></div></div>
+  </div></div>
+  <div class="nr"><span></span><button class="bn" onclick="goTo('teams')">Next: Teams & Roles →</button></div>
+</div>
+
+<!-- ══ TEAMS 1 ══ -->
+<div class="sc" id="sc-teams">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Teams & Roles (1/3)</span></div><h2 class="st">Team Members</h2><p class="ss">Settings › Teams — confirm everyone is added before moving on.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Go to <strong>Settings › Teams</strong> — confirm all members are listed</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Resend or send new invitations as needed</div><div class="ci-s">Click the pending member → Resend Invite</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain how to add future team members</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Settings › Teams → <span class="kw">Invite Member</span> → email + role. They get an invite link right away."</p></div></div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('welcome')">← Back</button><button class="bn" onclick="goTo('teams2')">Next →</button></div>
+</div>
+
+<!-- ══ TEAMS 2 ══ -->
+<div class="sc" id="sc-teams2">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Teams & Roles (2/3)</span></div><h2 class="st">How to Log In</h2></div>
+  <div class="ib dk">🔐 RentEngine has <b>no passwords</b>. Login uses a one-time code or magic link sent to email. First time only — then they stay logged in unless they log out manually.</div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Log in via <strong>app.rentengine.io</strong> or the invite link → enter email → get code or magic link</div><div class="ci-s">If the code expires, just request a new one</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Same process on the <strong>mobile app</strong> — stays logged in after first time</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('teams')">← Back</button><button class="bn" onclick="goTo('teams3')">Next →</button></div>
+</div>
+
+<!-- ══ TEAMS 3 ══ -->
+<div class="sc" id="sc-teams3">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Teams & Roles (3/3)</span></div><h2 class="st">User Roles</h2></div>
+  <div class="card">
+    <table class="rt" style="margin-bottom:14px;">
+      <thead><tr><th>Role</th><th>Access</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Admin</strong></td><td>Full access — everything</td></tr>
+        <tr><td><strong>Member</strong></td><td>Same as Admin except Team, Billing, Trusted Contacts</td></tr>
+        <tr><td><strong>Showing Agent</strong></td><td>Accompanied showings only — no other agents' prospects, no settings, no reports</td></tr>
+        <tr><td><strong>Maintenance</strong></td><td>Lockboxes section only</td></tr>
+        <tr><td><strong>Reports Only</strong></td><td>Intelligence tab and leasing reports only</td></tr>
+      </tbody>
+    </table>
+    <div class="cl">
+      <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Confirm role assigned to each member matches their responsibilities</div></div></div>
+    </div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('teams2')">← Back</button><button class="bn" onclick="goTo('company')">Next: Settings › Company →</button></div>
+</div>
+
+<!-- ══ COMPANY 1: PMS ══ -->
+<div class="sc" id="sc-company">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Company (1/4)</span></div><h2 class="st">PMS Connection</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain the PMS integration — syncs units, availability, and tenant data automatically</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">⚠️ Critical</span> Confirm <strong>internet syndication is OFF</strong> in the PMS</div><div class="ci-s">RentEngine handles all syndication — having both on creates duplicate listings</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"In your PMS, <span class="kw">disable internet syndication</span>. RentEngine takes over from here. Running both causes duplicates." <br><br>If from Tenant Turner / ShowMojo: "You likely already know this step — is that how you had it set up?"</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask if they're coming from Tenant Turner or ShowMojo — confirm syndication is already off</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('teams3')">← Back</button><button class="bn" onclick="goTo('company2')">Next →</button></div>
+</div>
+
+<!-- ══ COMPANY 2: WIDGET ══ -->
+<div class="sc" id="sc-company2">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Company (2/4)</span></div><h2 class="st">Website Widget</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain the website widget — embeds live listings on their site, customizable</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"RentEngine has a <span class="kw">website widget</span> that pulls your active listings automatically. Prospects can search, view, and schedule showings without leaving your site."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Who manages updates to your website?"</em></div><div class="ci-s">Determines next step</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Based on their answer, route accordingly:</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🌐 Widget Routing — Ask First, Then Route</div>
+    <div class="sys-row"><span class="sys-icon">🏢</span><div class="sys-text"><b>PMI franchise?</b> → Works with <em>PMW</em>. We send them the Account ID directly. <em>No widget install needed.</em></div></div>
+    <div class="sys-row"><span class="sys-icon">🔑</span><div class="sys-text"><b>RPM or KeyRenter franchise?</b> → Has a <em>centralized office</em> that updates their website. Coordinate with that team.</div></div>
+    <div class="sys-row"><span class="sys-icon">👨‍💻</span><div class="sys-text"><b>Manages own site or other provider?</b> → Share Account ID + embed code. Their developer drops it in.</div></div>
+    <div class="q-card" style="margin-top:10px;">
+      <div class="q-card-title">📋 Ask</div>
+      <div class="q-item"><div class="q-num">1</div><div class="q-text">Are you part of a franchise (PMI, RPM, KeyRenter)?</div></div>
+      <div class="q-item"><div class="q-num">2</div><div class="q-text">Who handles your website updates — in-house, an agency, or a franchise system?</div></div>
+    </div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('company')">← Back</button><button class="bn" onclick="goTo('company3')">Next →</button></div>
+</div>
+
+<!-- ══ COMPANY 3: BRANDING ══ -->
+<div class="sc" id="sc-company3">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Company (3/4)</span></div><h2 class="st">Company Information & Branding</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Company info & branding is <strong>internal only</strong> — shows on owner reports, not to prospects</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Company email here receives <strong>owner replies</strong> to automated reports</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Owner Report Timing</strong> — automated schedule, customizable metrics and email body</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"RentEngine can auto-send owner reports on a schedule. You control which <span class="kw">metrics</span> and the <span class="kw">email body</span>. We'll activate this at the unit level later."</p></div></div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('company2')">← Back</button><button class="bn" onclick="goTo('company4')">Next →</button></div>
+</div>
+
+<!-- ══ COMPANY 4: MISC ══ -->
+<div class="sc" id="sc-company4">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Company (4/4)</span></div><h2 class="st">Photo Watermark, Market Tool & Office Hours</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Photo Watermark</strong> — RentEngine can add watermarks to listing photos automatically</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Market Tool</strong> — for checking rent comps. Offer to go deeper if interested.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Office Hours</strong> — controls when AI is active and what response time it promises prospects</div><div class="ci-s">Will be revisited in the AI section</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('company3')">← Back</button><button class="bn" onclick="goTo('portfolio')">Next: Portfolio →</button></div>
+</div>
+
+<!-- ══ PORTFOLIO ══ -->
+<div class="sc" id="sc-portfolio">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Portfolio</span></div><h2 class="st">Portfolio Defaults</h2><p class="ss">Defaults that apply to all listings. Everything can be overridden at the unit level.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Set once here for what's consistent across most properties — units can always override</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Move-In Fees</strong> — include admin fee, lease setup fee. Not: application fee, first month, or security deposit</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Monthly Fees</strong> — parking, storage, pet rent. Not: base rent</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Security Deposit, Pet Fees, Resident Qualifications</strong> — fill in if consistent across most units</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Remind: all of this can be overridden per unit anytime</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">⚙️ Move-In Timing Settings</div>
+    <div class="sys-row"><span class="sys-icon">📅</span><div class="sys-text"><b>Property can be held for X days</b> (max_move_in_gap_days) — <em>enforced ceiling</em>. Used in prescreening rejection, AI date check, and Command Center flags.</div></div>
+    <div class="sys-row"><span class="sys-icon">⏱️</span><div class="sys-text"><b>Move-in within X days</b> (min_move_in_gap_days) — soft floor. Only used in AI date check, not hard rejected in prescreening.</div></div>
+    <div class="sys-row"><span class="sys-icon">📋</span><div class="sys-text"><b>Allow applications without showing</b> — <em>informational only</em>. Does not block anything. AI uses it to answer questions.</div></div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('company4')">← Back</button><button class="bn" id="btn-after-portfolio" onclick="afterPortfolio()">Next →</button></div>
+</div>
+
+<!-- ══ PERSONAL AVAIL 1 ══ -->
+<div class="sc" id="sc-personal-avail">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Personal Availability (1/2) · AC / Both</span></div><h2 class="st">General Availability</h2><p class="ss">Settings › Showings › Personal — every showing agent must set this up first.</p></div>
+  <div class="ib am"><strong>Key concept:</strong> This is the <em>foundation</em>. Unit-level availability can only be a subset of what's set here — never more.</div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Go to <strong>Settings › Showings › Personal › Edit Showing Windows</strong></div><div class="ci-s">Each agent does this for themselves</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the availability grid — explain it's their general base schedule</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">📅 Availability: General vs. Unit Level</div>
+    <div class="av-compare">
+      <div class="av-panel">
+        <div class="av-panel-title">⚙️ Settings › Personal</div>
+        <div class="av-panel-subtitle">General availability — the starting point</div>
+        <div class="av" style="grid-template-columns:repeat(7,1fr);">
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">M</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs on">11a</div><div class="avs on">1p</div><div class="avs on">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">T</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs on">11a</div><div class="avs on">1p</div><div class="avs on">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">W</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs off">11a</div><div class="avs on">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Th</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs on">11a</div><div class="avs on">1p</div><div class="avs on">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">F</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs on">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Sa</div><div class="av-sl"><div class="avs off">9a</div><div class="avs off">10a</div><div class="avs off">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Su</div><div class="av-sl"><div class="avs off">9a</div><div class="avs off">10a</div><div class="avs off">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+        </div>
+      </div>
+      <div class="av-panel">
+        <div class="av-panel-title">🏠 Property Level</div>
+        <div class="av-panel-subtitle">Can only use slots from personal — not add new ones</div>
+        <div class="av" style="grid-template-columns:repeat(7,1fr);">
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">M</div><div class="av-sl"><div class="avs on">9a</div><div class="avs off">10a</div><div class="avs off">11a</div><div class="avs on">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">T</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs off">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">W</div><div class="av-sl"><div class="avs on">9a</div><div class="avs off">10a</div><div class="avs off">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Th</div><div class="av-sl"><div class="avs on">9a</div><div class="avs on">10a</div><div class="avs on">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">F</div><div class="av-sl"><div class="avs on">9a</div><div class="avs off">10a</div><div class="avs off">11a</div><div class="avs off">1p</div><div class="avs off">2p</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Sa</div><div class="av-sl"><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div></div></div>
+          <div><div class="av-lbl" style="color:rgba(255,255,255,.4);">Su</div><div class="av-sl"><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div><div class="avs locked">✗</div></div></div>
+        </div>
+        <div style="font-size:10px;color:#FCA5A5;margin-top:6px;">✗ Sat/Sun can't be added here if not in personal settings</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+      <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.6);"><span style="width:10px;height:10px;border-radius:2px;background:var(--navy);display:inline-block;border:1px solid rgba(255,255,255,.3);"></span>Available</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:rgba(255,255,255,.6);"><span style="width:10px;height:10px;border-radius:2px;background:var(--g100);display:inline-block;"></span>Not available</span>
+      <span style="display:flex;align-items:center;gap:4px;font-size:10px;color:#FCA5A5;"><span style="width:10px;height:10px;border-radius:2px;background:var(--rpale);display:inline-block;"></span>Blocked — not in personal settings</span>
+    </div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('portfolio')">← Back</button><button class="bn" onclick="goTo('personal-avail2')">Next →</button></div>
+</div>
+
+<!-- ══ PERSONAL AVAIL 2 ══ -->
+<div class="sc" id="sc-personal-avail2">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Personal Availability (2/2) · AC / Both</span></div><h2 class="st">Calendar Integration</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Each agent can connect their <strong>Google or Outlook calendar</strong></div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"RentEngine reads your calendar — doesn't write to it — and blocks any times where you have a busy event. Meeting at 2pm? That slot won't be offered to prospects."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Each agent connects under: <strong>Settings › Showings › Personal › Calendar Connection</strong></div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('personal-avail')">← Back</button><button class="bn" onclick="goTo('showings-co')">Next: Settings › Showings →</button></div>
+</div>
+
+<!-- ══ SHOWINGS CO 1 ══ -->
+<div class="sc" id="sc-showings-co">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (1/4) · AC / Both</span></div><h2 class="st">Accompanied Showing Settings</h2><p class="ss">Ask these questions naturally — each maps to a specific setting.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How long do your showings typically take?"</em> → <strong>Accompanied Showing Duration</strong></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Can multiple prospects book the same time slot?"</em> → <strong>Max Stacked Showings</strong></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Do you allow back-to-back showings?"</em> → <strong>Piggyback Maximum</strong></div><div class="ci-s">0 = disabled. Piggybacking = prospect books right before/after an existing showing at same property.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For multifamily — <strong>Multifamily Piggyback Maximum</strong> (back-to-back across units in same building)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How many times per day to the same property?"</em> → <strong>Max Visits Per Property Per Day</strong></div><div class="ci-s">Recommendation: 1. Stacked/piggybacked showings don't count as extra trips.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Max Visits Per Unit Per Week</strong> if applicable</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" id="bb-showings-co" onclick="backFromShowingsCo()">← Back</button><button class="bn" onclick="goTo('showings-co2')">Next →</button></div>
+</div>
+
+<!-- ══ SHOWINGS CO 2 ══ -->
+<div class="sc" id="sc-showings-co2">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (2/4) · AC / Both</span></div><h2 class="st">Timing, Confirmation & Feedback</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Minimum Notice Period</strong> — hours before a showing can be booked</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Send Confirmation Before Showing</strong> — minutes before to send confirmation SMS</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Auto-Cancel for Unconfirmed Showings</strong> — minutes before to auto-cancel if not confirmed</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Drive Time Buffer (%)</strong> — extra buffer on top of Google Maps drive time</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Review agent assignment settings — only for commission-based external agents</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Enable <strong>Send Feedback Form After Accompanied Showing</strong></div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"~30 min after the showing ends, the prospect gets an SMS asking their next step — apply, still deciding, or not interested. That response <span class="kw">automatically updates their status</span>. No response in 2 hours? System closes it automatically."</p></div></div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('showings-co')">← Back</button><button class="bn" onclick="goTo('showings-co3')">Next →</button></div>
+</div>
+
+<!-- ══ SHOWINGS CO 3 ══ -->
+<div class="sc" id="sc-showings-co3">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (3/4)</span></div><h2 class="st">All Showings Settings</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Enable <strong>Send application after showing completed</strong></div><div class="ci-s">Auto-sends application link 1hr after scheduled start if no feedback submitted. Recommendation: Yes.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Max lead time for showings</strong> — how many days ahead a showing can be booked. Recommendation: 7 days.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Review <strong>Require PM Approval for Showings</strong></div><div class="ci-s">Manual approval before confirming — only if auto-scheduling is not desired</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" id="bb-showings-co3" onclick="backFromShowingsCo3()">← Back</button><button class="bn" onclick="goTo('showings-co4')">Next →</button></div>
+</div>
+
+<!-- ══ SHOWINGS CO 4 ══ -->
+<div class="sc" id="sc-showings-co4">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (4/4)</span></div><h2 class="st">Showing Windows & Availability Templates</h2></div>
+  <div class="ib gr"><strong>Don't forget:</strong> Hit <strong>Save</strong> at top-right after setting these.</div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Self-Guided Showing Windows</strong> — select days/hours in blue</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Set <strong>Remote-Guided Showing Windows</strong> if applicable</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Note: accompanied windows set at agent/property level — not here</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Create <strong>Availability Templates</strong> — reusable accompanied time-slot sets for unit-level assignment</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Build a template from your personal availability slots, name it, and assign it to specific units later — instead of configuring each one from scratch."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Press <strong>Save</strong> ✅</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('showings-co3')">← Back</button><button class="bn" onclick="goTo('prescreening')">Next: Prescreening →</button></div>
+</div>
+
+<!-- ══ PRESCREENING 1 ══ -->
+<div class="sc" id="sc-prescreening">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Prescreening (1/2)</span></div><h2 class="st">Prescreening Overview</h2><p class="ss">Settings › Showings › Prescreening — filters unqualified prospects before they book.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain the purpose — filters prospects before they can schedule</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the <strong>Housing Voucher question</strong> and rejection logic</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the <strong>Preferred Move-In Date question</strong></div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Move-in date is checked against two settings: the <span class="kw">earliest</span> (min notice) and <span class="kw">latest</span> (hold ceiling). The ceiling is enforced at prescreening — if their date exceeds it, they're auto-rejected. The floor is softer, only used by the AI."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain question types — multiple choice, yes/no, text, etc.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show how to add, remove, and edit questions</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('showings-co4')">← Back</button><button class="bn" onclick="goTo('prescreening2')">Next →</button></div>
+</div>
+
+<!-- ══ PRESCREENING 2 ══ -->
+<div class="sc" id="sc-prescreening2">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Prescreening (2/2)</span></div><h2 class="st">Fraud Guard & Multiple Templates</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Fraud Guard</strong> — ID verification and duplicate detection after prescreening</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain how to create <strong>multiple templates</strong> for properties with different rental criteria</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Make any needed changes to the template together during the call</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('prescreening')">← Back</button><button class="bn" onclick="goTo('notifications')">Next: Notifications →</button></div>
+</div>
+
+<!-- ══ NOTIFICATIONS ══ -->
+<div class="sc" id="sc-notifications">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Notifications</span></div><h2 class="st">Communication › Notifications</h2><p class="ss">Personal settings — each team member manages their own.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Each user toggles the email notifications they want to receive — personal page</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Forwarding Number</strong> — legacy feature, not required. Account already has a dedicated number.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Other Communication settings (AI, Snippets) covered during the Command Center walkthrough</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('prescreening2')">← Back</button><button class="bn" id="btn-after-notif" onclick="afterNotif()">Next →</button></div>
+</div>
+
+<!-- ══ LOCKBOXES ══ -->
+<div class="sc" id="sc-lockboxes">
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Lockboxes · SG / Both</span></div><h2 class="st">Settings › Lockboxes</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Confirm lockboxes have been added — or note as a follow-up if still in progress</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">Admin only</span> Explain <strong>Trusted Contacts</strong> — standing lockbox access outside showing windows</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Trusted contacts — like maintenance or inspectors — get <span class="kw">standing access</span> outside the normal schedule. We'll send you the setup instructions to share with them. Only Admins can add Trusted Contacts."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show <strong>Lockbox History</strong> — who accessed what and when</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🔒 Compatible Lockboxes</div>
+    <div class="lb-grid">
+      <div class="lb-card"><div class="lb-name">Sentrilock</div><div class="lb-detail">8-digit code. Most common. Hardware key fob or app.</div></div>
+      <div class="lb-card"><div class="lb-name">Rently</div><div class="lb-detail">Smart lockbox. Prospect app or code. Auto-tracks access.</div></div>
+      <div class="lb-card"><div class="lb-name">Combo Lockbox</div><div class="lb-detail">4-digit code. No hardware needed. PM enters code manually in RentEngine.</div></div>
+    </div>
+    <div style="margin-top:10px;">
+      <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text"><em>Deadbolt locks are not supported</em> — lockbox must be the primary access method. Combo codes are static and do not auto-expire.</div></div>
+      <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Trusted Contacts</b> receive a setup email from RentEngine with instructions. <em>Only Admins can add them.</em> They can access outside scheduled showing windows.</div></div>
+    </div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('notifications')">← Back</button><button class="bn" onclick="goTo('properties')">Next: Properties →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 1 ══ -->
+<div class="sc" id="sc-properties">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (1/6)</span></div><h2 class="st">Properties Overview</h2><p class="ss">All units from the PMS appear here. "Incomplete" = not yet activated.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain the Properties tab — Incomplete = not activated, not visible to prospects</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask if they have <strong>multifamily properties</strong> — if yes, set up the connection now</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For large accounts — offer to do a <strong>bulk owner upload</strong> on their behalf</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" id="bb-properties" onclick="backFromProperties()">← Back</button><button class="bn" onclick="goTo('properties2')">Next →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 2 ══ -->
+<div class="sc" id="sc-properties2">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (2/6)</span></div><h2 class="st">Edit Property — Step 1: Information</h2><p class="ss">Take Action › Edit Property on an incomplete unit.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Most fields come from the PMS — pre-populated automatically</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Property Owner</strong> — add owner, enable weekly reports, toggle feedback inclusion</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Property description and details must be filled in <strong>manually</strong> — PMS doesn't provide this</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Earliest Move-In Date</strong> — auto-populated from AppFolio and Rentec Direct only; manual for all others</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Early Showing Date</strong> — always manual; controls when showings can start</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Click <strong>Next</strong> or the step number at the top to save — changes aren't saved otherwise</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties')">← Back</button><button class="bn" onclick="goTo('properties3')">Next →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 3 ══ -->
+<div class="sc" id="sc-properties3">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (3/6)</span></div><h2 class="st">Edit Property — Step 2: Showing Method</h2><p class="ss">This is where the showing method is set at the unit level.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Select Accompanied — assign agents, explain <strong>Smart Assign</strong></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Prospect-facing fields vs. internal fields (tenant contact info for notifications)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Advanced settings</strong> — unit-level overrides for company showing settings</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Availability</strong> — select from a template or configure manually</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Connect lockbox, add combo code, add access instructions</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Adjust self-guided availability for this unit; explain <strong>PM Approve</strong> option</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">Both</span> Both methods: accompanied is primary, self-guided as backup — prospects see two options</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Assign <strong>Sub-Team</strong> to this property if applicable</div><div class="ci-s">Routes all communication for this property to only that sub-team's members</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties2')">← Back</button><button class="bn" onclick="goTo('properties4')">Next →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 4 ══ -->
+<div class="sc" id="sc-properties4">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (4/6)</span></div><h2 class="st">Edit Property — Step 3: Price</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Rent syncs from PMS — price change reflects in RentEngine within 5–10 minutes</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Lower the rent in your PMS → updates here in <span class="kw">5–10 min</span> → every active prospect automatically gets a text saying the price went down. Zero manual work."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Special Offers</strong> — one-time promotions visible on the listing</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Mention <strong>Market Tool</strong> for rent comps — offer to go deeper if interested</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties3')">← Back</button><button class="bn" onclick="goTo('properties5')">Next →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 5 ══ -->
+<div class="sc" id="sc-properties5">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (5/6)</span></div><h2 class="st">Photos & Defaults</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Photos sync from the PMS — no manual upload needed</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Defaults</strong> — unit-level overrides for fees, qualifications, pet policies from Portfolio</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Assign a different <strong>prescreening template</strong> at unit level if needed</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties4')">← Back</button><button class="bn" onclick="goTo('properties6')">Next →</button></div>
+</div>
+
+<!-- ══ PROPERTIES 6 ══ -->
+<div class="sc" id="sc-properties6">
+  <div class="sh"><div class="se">Module 2 — Properties <span>· Property Activation (6/6)</span></div><h2 class="st">Take Action Menu</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Manual withdraw no longer needed — PMS rental status auto-withdraws the listing</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Availability Audit</strong> — review and catch scheduling gaps (especially for AC)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">If MLS</span> <strong>Agent Link</strong> — shareable link for external MLS agents</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Mark Unit On Hold</strong> — pauses listing without withdrawing; use when lease is pending</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">If Multifamily</span> Walk through <strong>Multifamily tab</strong> — unit grouping and what RentEngine sends</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties5')">← Back</button><button class="bn" onclick="goTo('cc')">Next: Command Center →</button></div>
+</div>
+
+<!-- ══ CC 1 ══ -->
+<div class="sc" id="sc-cc">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (1/5)</span></div><h2 class="st">Phone Number & Prospect List</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Point out the <strong>dedicated RentEngine phone number</strong> — sends/receives texts and calls</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the left panel — the prospect list</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Send a test message to yourself — show the <strong>black dot</strong> that appears (only clears when you reply)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain search filters — Name, Address, Phone, Building name</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show the <strong>Filter icon</strong> → "Show only unanswered messages" — key daily workflow filter</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">To receive <strong>calls in the browser</strong> — click the 🔔 bell icon at bottom-right to subscribe to notifications</div><div class="ci-s">Must be enabled per browser — without this, calls won't ring in the browser tab</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('properties6')">← Back</button><button class="bn" onclick="goTo('cc2')">Next →</button></div>
+</div>
+
+<!-- ══ CC 2 ══ -->
+<div class="sc" id="sc-cc2">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (2/5)</span></div><h2 class="st">Right Panel & Message Colors</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the right panel — prospect info, status, assigned property</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show how to add a <strong>Note</strong> or set a <strong>Follow-Up</strong> reminder</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Light blue boxes</strong> — internal system info only, never visible to prospects (prescreen results)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Dark boxes</strong> — outbound messages from RentEngine or your team</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">📨 Automated Message Cadence — Status Triggered</div>
+    <div class="sys-row"><span class="sys-icon">🟢</span><div class="sys-text"><b>Price Drop Alert</b> — sent to: <em>Contacted, ShowingDesired, StillDeciding, AppSent, Ghosting, MissedShowing, ShowingFailed</em> and a few more. Skipped if no inbound activity in 60 days.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔴</span><div class="sys-text"><b>Unit No Longer Available</b> — sent to most active statuses. Skipped for: Withdrawn, NotInterested, Ghosting, ApplicationReceived+, LeaseSigned, MovedIn.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔵</span><div class="sys-text"><b>Unit Ready for Showing</b> (back on market) — sent to: <em>Contacted, New, ShowingDesired, ShowingCanceled only.</em> All other statuses skipped.</div></div>
+    <div class="sys-row"><span class="sys-icon">⚫</span><div class="sys-text"><b>Post-Showing Follow-up</b> — blocked entirely if prospect is <em>Withdrawn, Ghosting, or NotInterested</em> at time of ShowingComplete.</div></div>
+    <div class="sys-row"><span class="sys-icon">🤖</span><div class="sys-text">These messages are <b>not AI</b> — they're status-triggered templates. Go to <em>Settings › Communication › Messages</em> to review and customize.</div></div>
+  </div>
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">📬 Follow-Up Cadences by Stage</div>
+    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Pre-showing</b> (New / Contacted / ShowingDesired) — up to <em>3 SMS nudges</em>: ~24h → 20h → 24h → final 48h. If no reply → marked <em>Unresponsive (Ghosting)</em>, follow-ups stop.</div></div>
+    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Incomplete Application</b> — up to <em>4 SMS over ~3 days</em>: +6h → +18h → +24h → +24h. Messages are personalized to the section they dropped off on. Final: <em>"I'll go ahead and close out your file."</em></div></div>
+    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Post-Showing — App Link Sent</b> — up to <em>3 SMS</em>. Auto-send: first ~4h after showing, then +24h, +48h → Ghosting. Manual-send: first ~24h after agent sends, then same chain.</div></div>
+    <div class="sys-row"><span class="sys-icon">4️⃣</span><div class="sys-text"><b>Post-Showing — Still Deciding</b> — up to <em>3 SMS</em>: ~18h after showing → +48h → +40h → Ghosting.</div></div>
+    <div class="sys-row"><span class="sys-icon">5️⃣</span><div class="sys-text"><b>Failed / Missed / Canceled Showing</b> — <em>1–2 reschedule nudges</em>: immediate link → +24h if no rebook → stops.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔔</span><div class="sys-text"><b>Showing Reminders</b> — separate from follow-ups. <em>Accompanied:</em> confirmation SMS 180min before, auto-cancel 90min before if unconfirmed. <em>Self-guided:</em> link 1h before, never auto-canceled. All reminders clamped to <em>8am–8pm local time</em>.</div></div>
+    <div class="sys-row"><span class="sys-icon">🛑</span><div class="sys-text"><b>Follow-ups stop immediately</b> when status hits: <em>NotInterested, Withdrawn, Ghosting, Blocklist, AppRejected, AppApproved, LeaseSigned, MovedIn, DuplicateLead, UnitUnavailable.</em> Also pause if prospect replied within last 32h or unit is On Hold.</div></div>
+  </div>
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">🔕 Statuses That Receive No Automated Messages</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px;">
+      <div class="status-chip sc-skip">Application Approved</div>
+      <div class="status-chip sc-skip">Application Rejected</div>
+      <div class="status-chip sc-skip">Lease Signed</div>
+      <div class="status-chip sc-skip">Moved In</div>
+      <div class="status-chip sc-skip">Deposit Received</div>
+      <div class="status-chip sc-skip">Withdrawn</div>
+      <div class="status-chip sc-skip">Not Interested</div>
+      <div class="status-chip sc-skip">Blocklist Prospect</div>
+      <div class="status-chip sc-skip">Prescreen Rejected</div>
+      <div class="status-chip sc-skip">Duplicate Lead</div>
+      <div class="status-chip sc-skip">HOA App Submitted/Approved/Rejected</div>
+      <div class="status-chip sc-skip">Lease Out For Signing</div>
+      <div class="status-chip sc-partial">Ghosting / Unresponsive</div>
+      <div class="status-chip sc-partial">Application Received</div>
+      <div class="status-chip sc-partial">Looking Too Early</div>
+      <div class="status-chip sc-partial">Unit of Interest Unavailable</div>
+    </div>
+    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.4);">🔴 Red = silent across all workflows &nbsp;·&nbsp; 🟡 Yellow = partial exclusions only</div>
+    <div class="sys-row" style="margin-top:8px;"><span class="sys-icon">⚠️</span><div class="sys-text">Exception: <b>Self-guided auto-complete SMS</b> ("So how did you like it?") fires for <em>any</em> status — no gating. Showing reminders also send regardless of later status changes.</div></div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('cc')">← Back</button><button class="bn" onclick="goTo('cc3')">Next →</button></div>
+</div>
+
+<!-- ══ CC 3 ══ -->
+<div class="sc" id="sc-cc3">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (3/5)</span></div><h2 class="st">RentEngine AI & Snippets</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Go to <strong>Settings › Communication › RentEngine AI</strong> — explain what it pulls from</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Snippets</strong> — non-property-specific Q&A, format as question + answer</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">⚠️ Recommend</span> Don't enable AI yet — verify property info, build Snippets first</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">AI escalation: black dot + push notification + email when AI can't answer</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">AI response timing tied to <strong>Office Hours</strong> in Settings › Company</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Pause for questions</strong> — is text communication clear?</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🤖 SMS AI — What It Handles vs. Skips</div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>AI replies</b> for: New, Contacted, ShowingDesired, ShowingPending/Scheduled, Ghosting, NotInterested, Withdrawn (treated as inactive — AI allows new property search)</div></div>
+    <div class="sys-row"><span class="sys-icon">🔇</span><div class="sys-text"><b>Silent stop</b> (no reply, no alert): LeaseSigned, MovedIn, AppApproved/Rejected (&lt;7d), PrescreenRejected (&lt;2d), HOA statuses, DepositReceived</div></div>
+    <div class="sys-row"><span class="sys-icon">📣</span><div class="sys-text"><b>Escalates to PM</b>: ShowingFailed, ApplicationInOwnerReview</div></div>
+    <div class="sys-row"><span class="sys-icon">📞</span><div class="sys-text"><b>Voice AI</b> answers calls for: New, Contacted, ShowingDesired, MissedShowing, Withdrawn, NotInterested, Ghosting, ShowingPending/Canceled, DuplicateLead. <em>Bypasses AI</em> if prospect has ShowingScheduled, ShowingConfirmed, AppReceived+, LeaseSigned, MovedIn, etc.</div></div>
+    <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text">Voice AI checks <b>all</b> of a caller's prospects — if even one has a non-whitelisted status, the whole call goes to human forwarding.</div></div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('cc2')">← Back</button><button class="bn" onclick="goTo('cc4')">Next →</button></div>
+</div>
+
+<!-- ══ CC 4 ══ -->
+<div class="sc" id="sc-cc4">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (4/5)</span></div><h2 class="st">Inbound Calls & Actions</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain inbound calls — browser ring vs. forwarding number; <strong>Do Not Disturb</strong> (browser and phone app independently)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Offer to explain <strong>AI Calls</strong> if interested</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Send Scheduling Link</strong> — prospect goes through Prescreening Flow first</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Schedule Showing</strong> — bypasses prescreening, books directly</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Schedule a showing manually using yourself — walk through live</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Briefly walk through remaining actions (send application, change status, add note)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Blocklist</strong> — block abusive prospects from scheduling future showings</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For large teams — explain <strong>Sub-Teams</strong> and how they route communication per property</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('cc3')">← Back</button><button class="bn" onclick="goTo('cc5')">Next →</button></div>
+</div>
+
+<!-- ══ CC 5 ══ -->
+<div class="sc" id="sc-cc5">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (5/5)</span></div><h2 class="st">Self-Guided Showing Flow</h2></div>
+  <div class="card-sys">
+    <div class="card-sys-title">🔑 Self-Guided Prospect Experience</div>
+    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Ready for your tour?</b> — Prospect clicks their link. Location check + timing gate (available 45min before, up to 60min after scheduled time). Must click <em>"I've Arrived"</em>.</div></div>
+    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Access Instructions</b> — Shows lockbox location, codes, gate codes, PM notes. Can tap <em>"I'm in"</em> or <em>"I'm having trouble."</em></div></div>
+    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Feedback form</b> — Required: next step (apply / still deciding / not interested). Optional: likes, dislikes, star rating. Must lock up before submitting.</div></div>
+    <div class="sys-row"><span class="sys-icon">⏱️</span><div class="sys-text"><b>Auto-complete</b>: 45 min after scheduled time, if status is ShowingStarted/Arrived → marked Complete → prospect gets feedback SMS + application link. If they never arrived → marked <em>MissedShowing.</em></div></div>
+    <div class="sys-row"><span class="sys-icon">❌</span><div class="sys-text"><b>Self-guided showings are NOT auto-canceled</b> — no confirmation required from the prospect. They stay in ShowingScheduled indefinitely until they arrive or 45min passes.</div></div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('cc4')">← Back</button><button class="bn" onclick="goTo('calendar')">Next: Showings Calendar →</button></div>
+</div>
+
+<!-- ══ CALENDAR 1 ══ -->
+<div class="sc" id="sc-calendar">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· Showings Calendar (1/2)</span></div><h2 class="st">Showings Calendar</h2><p class="ss">Color-coded view of all showings across your portfolio.</p></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain color coding — walk through what each color represents and show the legend</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Mention <strong>Block Times</strong> — how to block off times to prevent showings from being scheduled</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Log into phone app if time allows — show how a showing looks there</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Click a showing — show what the agent sees</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <span class="tag twarn">⚠️</span> Do NOT click "Confirm Showing" — that's for the prospect</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> <strong>Start Showing</strong> → feedback form → send application link directly</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('cc5')">← Back</button><button class="bn" onclick="goTo('calendar2')">Next →</button></div>
+</div>
+
+<!-- ══ CALENDAR 2 ══ -->
+<div class="sc" id="sc-calendar2">
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· Showings Calendar (2/2)</span></div><h2 class="st">Self-Guided & Wrap-up</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Click on a showing — show options (access code, contact prospect, cancel)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Cancel the test showing — show red color and how canceled showings may be hidden</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the full color-code legend</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tall">If RentEngine Apps</span> Go to <strong>Settings › Rental App Templates</strong> and walk through the template</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('calendar')">← Back</button><button class="bn" onclick="goTo('reports')">Next: Reports →</button></div>
+</div>
+
+<!-- ══ REPORTS ══ -->
+<div class="sc" id="sc-reports">
+  <div class="sh"><div class="se">Module 4 — Reports <span>· Reports & Intelligence</span></div><h2 class="st">Reports & Intelligence</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show how to generate a leasing report — individual unit reports</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Difference between <strong>automated reports</strong> (for owners) and <strong>manual reports</strong> (on-demand)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Reports can be sent directly from this section</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Intelligence tab</strong> — portfolio-wide analytics, not individual unit reports</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the Intelligence tabs — conversion, occupancy, leasing performance</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Syndication Status</strong> — report issues with Zillow or any listing site</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('calendar2')">← Back</button><button class="bn" onclick="goTo('support')">Next: Support & Wrap-up →</button></div>
+</div>
+
+<!-- ══ SUPPORT ══ -->
+<div class="sc" id="sc-support">
+  <div class="sh"><div class="se">Module 4 — Reports <span>· Support & Wrap-up</span></div><h2 class="st">Support & Next Steps</h2></div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Point out the <strong>chat widget</strong> at the bottom right — real team, including weekends</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show <strong>RentEngine University</strong> — self-serve training and help articles</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Schedule <strong>Week 1 Check-In</strong> — put a date on the calendar before ending the call</div></div></div>
+  </div></div>
+  <div class="nr"><button class="bb" onclick="goTo('reports')">← Back</button><button class="bn" onclick="goTo('data')">Next: Data Extraction →</button></div>
+</div>
+
+<!-- ══ DATA ══ -->
+<div class="sc" id="sc-data">
+  <div class="sh"><div class="se">Final Step <span>· Data Extraction</span></div><h2 class="st">Data Extraction</h2><p class="ss">Explain the full process to the client before starting. Stop the recording naturally before this section.</p></div>
+  <div class="ib am"><strong>⚠️ Stop recording</strong> before starting — do this naturally, without announcing it.</div>
+  <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain what's being collected — unit data, leads, scheduled showings</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"Last part — we'll collect what's needed to activate your units, import existing leads, and transfer any already-scheduled showings. We'll send a confirmation email with next steps once everything is done."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tsg">SG / Both</span> Collect lockbox info — model, serial number, location per unit</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> Confirm which agents are assigned to which properties</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag tac">AC / Both</span> If Sub-Teams — collect sub-team assignments per property</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">If no showing system — ask how to get unit activation info</div></div></div>
+  </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">👥 Lead Import — Max 1 Month</div>
+    <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text">Import <b>last 2–3 weeks only</b>, max 1 month. Older leads may respond STOP → flags your number as spam.</div></div>
+    <div class="sys-row"><span class="sys-icon">📊</span><div class="sys-text"><b>Tenant Turner:</b> Reports › Lead Source Report</div></div>
+    <div class="sys-row"><span class="sys-icon">📊</span><div class="sys-text"><b>ShowMojo:</b> Reports › Other Reports › Detailed Prospect Data</div></div>
+    <div class="sys-row"><span class="sys-icon">📅</span><div class="sys-text">Also extract any <b>already-scheduled showings</b> to import.</div></div>
+  </div>
+  <div class="nr"><button class="bb" onclick="goTo('support')">← Back</button><button class="bn" onclick="goTo('done')">Finish Session →</button></div>
+</div>
+
+<!-- ══ DONE ══ -->
+<div class="sc" id="sc-done">
+  <div class="cc">
+    <img src="data:image/png;base64,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" alt="RentEngine" style="height:32px;width:auto;margin-bottom:20px;opacity:.8;">
+    <div class="cc-ico">🎉</div>
+    <div class="cc-t">Session Complete</div>
+    <p class="cc-s">Full onboarding covered — settings, properties, command center, reports, and data extraction.</p>
+    <div class="cc-stats">
+      <div class="csi"><div class="csi-n" id="stat-done">0</div><div class="csi-l">Items checked</div></div>
+      <div class="csi"><div class="csi-n" id="stat-total">0</div><div class="csi-l">Total items</div></div>
+      <div class="csi"><div class="csi-n" id="stat-pct">0%</div><div class="csi-l">Completion</div></div>
+    </div>
+    <button class="clb clp" onclick="resetAll()">↩ Start Over</button>
+    <button class="clb cls" onclick="window.print()">🖨 Print</button>
+  </div>
+  <div class="card">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--g400);margin-bottom:12px;">Post-Session Follow-up</div>
+    <div class="cl">
+      <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Import unit activation data throughout the day</div></div></div>
+      <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Import lead database and any already-scheduled showings</div></div></div>
+      <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Send confirmation email with next steps</div></div></div>
+      <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Week 1 check-in scheduled ✅</div></div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+let method=null;
+const SECS={
+  welcome:['welcome'],
+  teams:['teams','teams2','teams3'],
+  company:['company','company2','company3','company4'],
+  portfolio:['portfolio'],
+  'personal-avail':['personal-avail','personal-avail2'],
+  'showings-co':['showings-co','showings-co2','showings-co3','showings-co4'],
+  prescreening:['prescreening','prescreening2'],
+  notifications:['notifications'],
+  lockboxes:['lockboxes'],
+  properties:['properties','properties2','properties3','properties4','properties5','properties6'],
+  cc:['cc','cc2','cc3','cc4','cc5'],
+  calendar:['calendar','calendar2'],
+  reports:['reports'],
+  support:['support'],
+  data:['data'],
+  done:['done']
+};
+const S2S={};
+Object.entries(SECS).forEach(([s,ss])=>ss.forEach(id=>S2S[id]=s));
+
+function setMethod(m){method=m;document.querySelectorAll('.mo').forEach(e=>e.classList.remove('sel'));document.getElementById('mo-'+m).classList.add('sel');document.getElementById('btn-start').disabled=false;}
+function startChecklist(){
+  if(!method)return;
+  document.querySelectorAll('.sb-item.hi').forEach(e=>e.classList.remove('hi'));
+  const isAC=method==='ac'||method==='both';
+  const isSG=method==='sg'||method==='both';
+  if(!isAC)document.getElementById('sb-personal-avail').style.display='none';
+  if(!isSG)document.getElementById('sb-lockboxes').style.display='none';
+  goTo('welcome');
+}
+function goTo(id){
+  document.querySelectorAll('.sc').forEach(s=>s.classList.remove('vis'));
+  const el=document.getElementById('sc-'+id);
+  if(el)el.classList.add('vis');
+  const sec=S2S[id]||id;
+  document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('active');if(e.id==='sb-'+sec)e.classList.add('active');if(e.id==='sb-gate'&&id==='gate')e.classList.add('active');});
+  document.getElementById('main').scrollTop=0;
+  updateProgress();
+}
+function toggleCi(el){el.classList.toggle('ck');const sc=el.closest('.sc');if(sc)syncSb(S2S[sc.id.replace('sc-','')]);updateProgress();}
+function syncSb(sid){
+  const steps=SECS[sid]||[];
+  let t=0,d=0;
+  steps.forEach(s=>{const sc=document.getElementById('sc-'+s);if(!sc)return;sc.querySelectorAll('.ci').forEach(ci=>{t++;if(ci.classList.contains('ck'))d++;});});
+  const done=t>0&&d===t;
+  const item=document.getElementById('sb-'+sid);
+  if(item)item.classList.toggle('done',done);
+  const cc=document.getElementById('sbc-'+sid);
+  if(cc){cc.style.background=done?'var(--green)':'';cc.style.borderColor=done?'var(--green)':'';cc.style.color=done?'#fff':'transparent';}
+}
+function sbToggle(sid){
+  const steps=SECS[sid]||[];
+  let t=0,d=0;
+  steps.forEach(s=>{const sc=document.getElementById('sc-'+s);if(!sc)return;sc.querySelectorAll('.ci').forEach(ci=>{t++;if(ci.classList.contains('ck'))d++;});});
+  const nowDone=d!==t;
+  steps.forEach(s=>{const sc=document.getElementById('sc-'+s);if(!sc)return;sc.querySelectorAll('.ci').forEach(ci=>ci.classList.toggle('ck',nowDone));});
+  syncSb(sid);updateProgress();
+}
+function tsp(e,btn){e.stopPropagation();btn.classList.toggle('op');btn.nextElementSibling.classList.toggle('op');}
+function updateProgress(){
+  const all=document.querySelectorAll('.ci'),done=document.querySelectorAll('.ci.ck');
+  const pct=all.length?Math.round(done.length/all.length*100):0;
+  document.getElementById('pgbar').style.width=pct+'%';
+  document.getElementById('pct').textContent=pct+'%';
+  const sd=document.getElementById('stat-done'),st=document.getElementById('stat-total'),sp=document.getElementById('stat-pct');
+  if(sd)sd.textContent=done.length;if(st)st.textContent=all.length;if(sp)sp.textContent=pct+'%';
+}
+function afterPortfolio(){goTo((method==='ac'||method==='both')?'personal-avail':'showings-co3');}
+function backFromShowingsCo(){goTo((method==='ac'||method==='both')?'personal-avail2':'portfolio');}
+function backFromShowingsCo3(){goTo((method==='ac'||method==='both')?'showings-co2':'portfolio');}
+function afterNotif(){goTo((method==='sg'||method==='both')?'lockboxes':'properties');}
+function backFromProperties(){goTo((method==='sg'||method==='both')?'lockboxes':'notifications');}
+function resetAll(){
+  method=null;
+  document.querySelectorAll('.ci').forEach(e=>e.classList.remove('ck'));
+  document.querySelectorAll('.spb').forEach(e=>e.classList.remove('op'));
+  document.querySelectorAll('.spt').forEach(e=>e.classList.remove('op'));
+  document.querySelectorAll('.mo').forEach(e=>e.classList.remove('sel'));
+  document.getElementById('btn-start').disabled=true;
+  document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('done','active');const rel=['sb-welcome','sb-teams','sb-company','sb-portfolio','sb-personal-avail','sb-showings-co','sb-prescreening','sb-notifications','sb-lockboxes','sb-properties','sb-cc','sb-calendar','sb-reports','sb-support','sb-data','sb-done'];if(rel.includes(e.id))e.classList.add('hi');});
+  document.querySelectorAll('[id^="sbc-"]').forEach(e=>{e.style.background='';e.style.borderColor='';e.style.color='transparent';});
+  ['sb-personal-avail','sb-lockboxes'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+  goTo('gate');
+}
+goTo('gate');
+</script>
+</body>
+</html>
