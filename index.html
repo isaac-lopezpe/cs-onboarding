@@ -100,7 +100,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 
 /* CHECKLIST */
 .cl{display:flex;flex-direction:column;gap:6px;}
-.ci{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:9px;border:1px solid var(--g100);background:var(--g50);cursor:pointer;transition:.2s;user-select:none;}
+.ci{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:9px;border:1px solid #D0D5DE;background:var(--g50);cursor:pointer;transition:.2s;user-select:none;}
 .ci:hover{background:var(--g100);}
 .ci.ck{background:var(--gpale);border-color:#A7F3D0;}
 .cb{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--g200);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:11px;background:#fff;transition:.2s;color:transparent;}
@@ -196,6 +196,30 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 .lb-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px;}
 .lb-detail{font-size:10px;color:rgba(255,255,255,.5);line-height:1.4;}
 
+/* ACCORDION SUBSECTIONS */
+.sb-acc{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.sb-acc.open{max-height:400px;}
+.sb-sub{display:flex;align-items:center;gap:7px;padding:5px 12px 5px 28px;font-size:11px;color:rgba(255,255,255,.35);cursor:pointer;border-left:2px solid transparent;transition:.15s;line-height:1.3;}
+.sb-sub:hover{color:rgba(255,255,255,.65);background:rgba(255,255,255,.04);}
+.sb-sub.sub-active{color:rgba(255,255,255,.9);border-left-color:var(--orange);background:rgba(255,255,255,.05);}
+.sb-sub.sub-done{color:rgba(255,255,255,.4);}
+.sb-sub-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:.2s;}
+.sb-sub.sub-active .sb-sub-dot{background:var(--orange);}
+.sb-sub.sub-done .sb-sub-dot{background:var(--green);}
+.sb-sub-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.sb-sub-ck{width:28px;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;opacity:0;transition:opacity .15s;border-left:1px solid rgba(255,255,255,.06);}
+.sb-sub:hover .sb-sub-ck{opacity:1;}
+.sb-sub.sub-done .sb-sub-ck{opacity:1;}
+.sb-sub-cc{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent;background:transparent;transition:.2s;}
+.sb-sub.sub-done .sb-sub-cc{background:var(--green);border-color:var(--green);color:#fff;}
+.sb-sub-ck:hover .sb-sub-cc{border-color:rgba(255,255,255,.5);}
+.sb-sub.sub-done .sb-sub-ck:hover .sb-sub-cc{background:#0ea271;border-color:#0ea271;}
+/* caret on accordion parents */
+.has-acc .sb-label::after{content:'›';margin-left:5px;font-size:10px;opacity:.3;transition:transform .25s,opacity .2s;display:inline-block;}
+.has-acc.active .sb-label::after{opacity:.6;}
+.sb-acc.open ~ .has-acc .sb-label::after,
+.has-acc.acc-open .sb-label::after{transform:rotate(90deg);opacity:.7;}
+
 /* COMPLETE */
 .cc{background:var(--navy);border-radius:18px;padding:40px;text-align:center;margin-bottom:16px;}
 .cc-ico{font-size:44px;margin-bottom:14px;}
@@ -234,29 +258,133 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   <div class="sb-item active" id="sb-gate"><div class="sb-nav" onclick="goTo('gate')"><span class="sb-dot"></span><span class="sb-label">Showing Method</span></div></div>
   <div class="sb-div"></div>
   <div class="sb-gl">Module 1 — Settings</div>
-  <div class="sb-item hi" id="sb-welcome"><div class="sb-nav" onclick="goTo('welcome')"><span class="sb-dot"></span><span class="sb-label">Welcome & Recording</span></div><div class="sb-ck" onclick="sbToggle('welcome')"><div class="sb-cc" id="sbc-welcome">✓</div></div></div>
-  <div class="sb-item hi" id="sb-teams"><div class="sb-nav" onclick="goTo('teams')"><span class="sb-dot"></span><span class="sb-label">Teams & Roles</span></div><div class="sb-ck" onclick="sbToggle('teams')"><div class="sb-cc" id="sbc-teams">✓</div></div></div>
-  <div class="sb-item hi" id="sb-company"><div class="sb-nav" onclick="goTo('company')"><span class="sb-dot"></span><span class="sb-label">Settings › Company</span></div><div class="sb-ck" onclick="sbToggle('company')"><div class="sb-cc" id="sbc-company">✓</div></div></div>
-  <div class="sb-item hi" id="sb-portfolio"><div class="sb-nav" onclick="goTo('portfolio')"><span class="sb-dot"></span><span class="sb-label">Settings › Portfolio</span></div><div class="sb-ck" onclick="sbToggle('portfolio')"><div class="sb-cc" id="sbc-portfolio">✓</div></div></div>
-  <div class="sb-item hi" id="sb-personal-avail"><div class="sb-nav" onclick="goTo('personal-avail')"><span class="sb-dot"></span><span class="sb-label">Personal Availability</span></div><div class="sb-ck" onclick="sbToggle('personal-avail')"><div class="sb-cc" id="sbc-personal-avail">✓</div></div></div>
-  <div class="sb-item hi" id="sb-showings-co"><div class="sb-nav" onclick="goTo('showings-co')"><span class="sb-dot"></span><span class="sb-label">Settings › Showings</span></div><div class="sb-ck" onclick="sbToggle('showings-co')"><div class="sb-cc" id="sbc-showings-co">✓</div></div></div>
-  <div class="sb-item hi" id="sb-prescreening"><div class="sb-nav" onclick="goTo('prescreening')"><span class="sb-dot"></span><span class="sb-label">Prescreening</span></div><div class="sb-ck" onclick="sbToggle('prescreening')"><div class="sb-cc" id="sbc-prescreening">✓</div></div></div>
-  <div class="sb-item hi" id="sb-notifications"><div class="sb-nav" onclick="goTo('notifications')"><span class="sb-dot"></span><span class="sb-label">Notifications</span></div><div class="sb-ck" onclick="sbToggle('notifications')"><div class="sb-cc" id="sbc-notifications">✓</div></div></div>
-  <div class="sb-item hi" id="sb-lockboxes"><div class="sb-nav" onclick="goTo('lockboxes')"><span class="sb-dot"></span><span class="sb-label">Lockboxes</span></div><div class="sb-ck" onclick="sbToggle('lockboxes')"><div class="sb-cc" id="sbc-lockboxes">✓</div></div></div>
+
+  <div class="sb-item hi" id="sb-welcome">
+    <div class="sb-nav" onclick="goTo('welcome')"><span class="sb-dot"></span><span class="sb-label">Welcome & Recording</span></div>
+    <div class="sb-ck" onclick="sbToggle('welcome')"><div class="sb-cc" id="sbc-welcome">✓</div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-teams">
+    <div class="sb-nav" onclick="sidebarClick('teams')"><span class="sb-dot"></span><span class="sb-label">Teams & Roles</span></div>
+    <div class="sb-ck" onclick="sbToggle('teams')"><div class="sb-cc" id="sbc-teams">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-teams">
+    <div class="sb-sub" id="sub-teams"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams')">Team Members</span><div class="sb-sub-ck" onclick="subToggle('teams',event)"><div class="sb-sub-cc" id="ssbc-teams">✓</div></div></div>
+    <div class="sb-sub" id="sub-teams2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams2')">How to Log In</span><div class="sb-sub-ck" onclick="subToggle('teams2',event)"><div class="sb-sub-cc" id="ssbc-teams2">✓</div></div></div>
+    <div class="sb-sub" id="sub-teams3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams3')">User Roles</span><div class="sb-sub-ck" onclick="subToggle('teams3',event)"><div class="sb-sub-cc" id="ssbc-teams3">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-company">
+    <div class="sb-nav" onclick="sidebarClick('company')"><span class="sb-dot"></span><span class="sb-label">Settings › Company</span></div>
+    <div class="sb-ck" onclick="sbToggle('company')"><div class="sb-cc" id="sbc-company">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-company">
+    <div class="sb-sub" id="sub-company"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company')">PMS Connection</span><div class="sb-sub-ck" onclick="subToggle('company',event)"><div class="sb-sub-cc" id="ssbc-company">✓</div></div></div>
+    <div class="sb-sub" id="sub-company2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company2')">Website Widget</span><div class="sb-sub-ck" onclick="subToggle('company2',event)"><div class="sb-sub-cc" id="ssbc-company2">✓</div></div></div>
+    <div class="sb-sub" id="sub-company3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company3')">Branding & Reports</span><div class="sb-sub-ck" onclick="subToggle('company3',event)"><div class="sb-sub-cc" id="ssbc-company3">✓</div></div></div>
+    <div class="sb-sub" id="sub-company4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company4')">Market Tool & Hours</span><div class="sb-sub-ck" onclick="subToggle('company4',event)"><div class="sb-sub-cc" id="ssbc-company4">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi" id="sb-portfolio">
+    <div class="sb-nav" onclick="goTo('portfolio')"><span class="sb-dot"></span><span class="sb-label">Settings › Portfolio</span></div>
+    <div class="sb-ck" onclick="sbToggle('portfolio')"><div class="sb-cc" id="sbc-portfolio">✓</div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-personal-avail">
+    <div class="sb-nav" onclick="sidebarClick('personal-avail')"><span class="sb-dot"></span><span class="sb-label">Personal Availability</span></div>
+    <div class="sb-ck" onclick="sbToggle('personal-avail')"><div class="sb-cc" id="sbc-personal-avail">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-personal-avail">
+    <div class="sb-sub" id="sub-personal-avail"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('personal-avail')">General Availability</span><div class="sb-sub-ck" onclick="subToggle('personal-avail',event)"><div class="sb-sub-cc" id="ssbc-personal-avail">✓</div></div></div>
+    <div class="sb-sub" id="sub-personal-avail2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('personal-avail2')">Calendar Integration</span><div class="sb-sub-ck" onclick="subToggle('personal-avail2',event)"><div class="sb-sub-cc" id="ssbc-personal-avail2">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-showings-co">
+    <div class="sb-nav" onclick="sidebarClick('showings-co')"><span class="sb-dot"></span><span class="sb-label">Settings › Showings</span></div>
+    <div class="sb-ck" onclick="sbToggle('showings-co')"><div class="sb-cc" id="sbc-showings-co">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-showings-co">
+    <div class="sb-sub" id="sub-showings-co"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co')">Accompanied Settings</span><div class="sb-sub-ck" onclick="subToggle('showings-co',event)"><div class="sb-sub-cc" id="ssbc-showings-co">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co2')">Confirmation & Feedback</span><div class="sb-sub-ck" onclick="subToggle('showings-co2',event)"><div class="sb-sub-cc" id="ssbc-showings-co2">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co3')">All Showings</span><div class="sb-sub-ck" onclick="subToggle('showings-co3',event)"><div class="sb-sub-cc" id="ssbc-showings-co3">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co4')">Windows & Templates</span><div class="sb-sub-ck" onclick="subToggle('showings-co4',event)"><div class="sb-sub-cc" id="ssbc-showings-co4">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-prescreening">
+    <div class="sb-nav" onclick="sidebarClick('prescreening')"><span class="sb-dot"></span><span class="sb-label">Prescreening</span></div>
+    <div class="sb-ck" onclick="sbToggle('prescreening')"><div class="sb-cc" id="sbc-prescreening">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-prescreening">
+    <div class="sb-sub" id="sub-prescreening"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('prescreening')">Questions & Move-In</span><div class="sb-sub-ck" onclick="subToggle('prescreening',event)"><div class="sb-sub-cc" id="ssbc-prescreening">✓</div></div></div>
+    <div class="sb-sub" id="sub-prescreening2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('prescreening2')">Fraud Guard</span><div class="sb-sub-ck" onclick="subToggle('prescreening2',event)"><div class="sb-sub-cc" id="ssbc-prescreening2">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi" id="sb-notifications">
+    <div class="sb-nav" onclick="goTo('notifications')"><span class="sb-dot"></span><span class="sb-label">Notifications</span></div>
+    <div class="sb-ck" onclick="sbToggle('notifications')"><div class="sb-cc" id="sbc-notifications">✓</div></div>
+  </div>
+
+  <div class="sb-item hi" id="sb-lockboxes">
+    <div class="sb-nav" onclick="goTo('lockboxes')"><span class="sb-dot"></span><span class="sb-label">Lockboxes</span></div>
+    <div class="sb-ck" onclick="sbToggle('lockboxes')"><div class="sb-cc" id="sbc-lockboxes">✓</div></div>
+  </div>
+
   <div class="sb-div"></div>
   <div class="sb-gl">Module 2 — Properties</div>
-  <div class="sb-item hi" id="sb-properties"><div class="sb-nav" onclick="goTo('properties')"><span class="sb-dot"></span><span class="sb-label">Property Activation</span></div><div class="sb-ck" onclick="sbToggle('properties')"><div class="sb-cc" id="sbc-properties">✓</div></div></div>
+  <div class="sb-item hi has-acc" id="sb-properties">
+    <div class="sb-nav" onclick="sidebarClick('properties')"><span class="sb-dot"></span><span class="sb-label">Property Activation</span></div>
+    <div class="sb-ck" onclick="sbToggle('properties')"><div class="sb-cc" id="sbc-properties">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-properties">
+    <div class="sb-sub" id="sub-properties"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties')">Overview</span><div class="sb-sub-ck" onclick="subToggle('properties',event)"><div class="sb-sub-cc" id="ssbc-properties">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties2')">Step 1: Information</span><div class="sb-sub-ck" onclick="subToggle('properties2',event)"><div class="sb-sub-cc" id="ssbc-properties2">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties3')">Step 2: Showing Method</span><div class="sb-sub-ck" onclick="subToggle('properties3',event)"><div class="sb-sub-cc" id="ssbc-properties3">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties4')">Step 3: Price</span><div class="sb-sub-ck" onclick="subToggle('properties4',event)"><div class="sb-sub-cc" id="ssbc-properties4">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties5"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties5')">Photos & Defaults</span><div class="sb-sub-ck" onclick="subToggle('properties5',event)"><div class="sb-sub-cc" id="ssbc-properties5">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties6"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties6')">Take Action</span><div class="sb-sub-ck" onclick="subToggle('properties6',event)"><div class="sb-sub-cc" id="ssbc-properties6">✓</div></div></div>
+  </div>
+
   <div class="sb-div"></div>
   <div class="sb-gl">Module 3 — Command Center</div>
-  <div class="sb-item hi" id="sb-cc"><div class="sb-nav" onclick="goTo('cc')"><span class="sb-dot"></span><span class="sb-label">Command Center</span></div><div class="sb-ck" onclick="sbToggle('cc')"><div class="sb-cc" id="sbc-cc">✓</div></div></div>
-  <div class="sb-item hi" id="sb-calendar"><div class="sb-nav" onclick="goTo('calendar')"><span class="sb-dot"></span><span class="sb-label">Showings Calendar</span></div><div class="sb-ck" onclick="sbToggle('calendar')"><div class="sb-cc" id="sbc-calendar">✓</div></div></div>
+  <div class="sb-item hi has-acc" id="sb-cc">
+    <div class="sb-nav" onclick="sidebarClick('cc')"><span class="sb-dot"></span><span class="sb-label">Command Center</span></div>
+    <div class="sb-ck" onclick="sbToggle('cc')"><div class="sb-cc" id="sbc-cc">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-cc">
+    <div class="sb-sub" id="sub-cc"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc')">Phone & Prospect List</span><div class="sb-sub-ck" onclick="subToggle('cc',event)"><div class="sb-sub-cc" id="ssbc-cc">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2')">Message Colors & Cadences</span><div class="sb-sub-ck" onclick="subToggle('cc2',event)"><div class="sb-sub-cc" id="ssbc-cc2">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc3')">AI & Snippets</span><div class="sb-sub-ck" onclick="subToggle('cc3',event)"><div class="sb-sub-cc" id="ssbc-cc3">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc4')">Calls & Actions</span><div class="sb-sub-ck" onclick="subToggle('cc4',event)"><div class="sb-sub-cc" id="ssbc-cc4">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc5"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc5')">Showing Methods</span><div class="sb-sub-ck" onclick="subToggle('cc5',event)"><div class="sb-sub-cc" id="ssbc-cc5">✓</div></div></div>
+  </div>
+
+  <div class="sb-item hi has-acc" id="sb-calendar">
+    <div class="sb-nav" onclick="sidebarClick('calendar')"><span class="sb-dot"></span><span class="sb-label">Showings Calendar</span></div>
+    <div class="sb-ck" onclick="sbToggle('calendar')"><div class="sb-cc" id="sbc-calendar">✓</div></div>
+  </div>
+  <div class="sb-acc" id="acc-calendar">
+    <div class="sb-sub" id="sub-calendar"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('calendar')">Calendar Overview</span><div class="sb-sub-ck" onclick="subToggle('calendar',event)"><div class="sb-sub-cc" id="ssbc-calendar">✓</div></div></div>
+    <div class="sb-sub" id="sub-calendar2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('calendar2')">Self-Guided & Wrap-up</span><div class="sb-sub-ck" onclick="subToggle('calendar2',event)"><div class="sb-sub-cc" id="ssbc-calendar2">✓</div></div></div>
+  </div>
+
   <div class="sb-div"></div>
   <div class="sb-gl">Module 4 — Reports</div>
-  <div class="sb-item hi" id="sb-reports"><div class="sb-nav" onclick="goTo('reports')"><span class="sb-dot"></span><span class="sb-label">Reports & Intelligence</span></div><div class="sb-ck" onclick="sbToggle('reports')"><div class="sb-cc" id="sbc-reports">✓</div></div></div>
-  <div class="sb-item hi" id="sb-support"><div class="sb-nav" onclick="goTo('support')"><span class="sb-dot"></span><span class="sb-label">Support & Wrap-up</span></div><div class="sb-ck" onclick="sbToggle('support')"><div class="sb-cc" id="sbc-support">✓</div></div></div>
-  <div class="sb-item hi" id="sb-data"><div class="sb-nav" onclick="goTo('data')"><span class="sb-dot"></span><span class="sb-label">Data Extraction</span></div><div class="sb-ck" onclick="sbToggle('data')"><div class="sb-cc" id="sbc-data">✓</div></div></div>
+  <div class="sb-item hi" id="sb-reports">
+    <div class="sb-nav" onclick="goTo('reports')"><span class="sb-dot"></span><span class="sb-label">Reports & Intelligence</span></div>
+    <div class="sb-ck" onclick="sbToggle('reports')"><div class="sb-cc" id="sbc-reports">✓</div></div>
+  </div>
+  <div class="sb-item hi" id="sb-support">
+    <div class="sb-nav" onclick="goTo('support')"><span class="sb-dot"></span><span class="sb-label">Support & Wrap-up</span></div>
+    <div class="sb-ck" onclick="sbToggle('support')"><div class="sb-cc" id="sbc-support">✓</div></div>
+  </div>
+  <div class="sb-item hi" id="sb-data">
+    <div class="sb-nav" onclick="goTo('data')"><span class="sb-dot"></span><span class="sb-label">Data Extraction</span></div>
+    <div class="sb-ck" onclick="sbToggle('data')"><div class="sb-cc" id="sbc-data">✓</div></div>
+  </div>
   <div class="sb-div"></div>
-  <div class="sb-item hi" id="sb-done"><div class="sb-nav" onclick="goTo('done')"><span class="sb-dot"></span><span class="sb-label">Session Complete</span></div></div>
+  <div class="sb-item hi" id="sb-done">
+    <div class="sb-nav" onclick="goTo('done')"><span class="sb-dot"></span><span class="sb-label">Session Complete</span></div>
+  </div>
 </nav>
 
 <main class="main" id="main">
@@ -337,9 +465,17 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
   <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Company (1/4)</span></div><h2 class="st">PMS Connection</h2></div>
   <div class="card"><div class="cl">
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain the PMS integration — syncs units, availability, and tenant data automatically</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">⚠️ Critical</span> Confirm <strong>internet syndication is OFF</strong> in the PMS</div><div class="ci-s">RentEngine handles all syndication — having both on creates duplicate listings</div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"In your PMS, <span class="kw">disable internet syndication</span>. RentEngine takes over from here. Running both causes duplicates." <br><br>If from Tenant Turner / ShowMojo: "You likely already know this step — is that how you had it set up?"</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">⚠️ Critical</span> Turn off syndication to listing sites in the PMS — check which system they use below</div><div class="ci-s">RentEngine handles all syndication from here. Running both causes duplicate listings.</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask if they're coming from Tenant Turner or ShowMojo — confirm syndication is already off</div></div></div>
   </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🔌 Syndication — What to Turn Off by PMS</div>
+    <div class="sys-row"><span class="sys-icon">🏢</span><div class="sys-text"><b>AppFolio</b> — Only post to <em>Website</em>. Never post to the internet/listing sites directly.</div></div>
+    <div class="sys-row"><span class="sys-icon">🍇</span><div class="sys-text"><b>RentVine</b> — Only post to <em>Website</em> and <em>Showing Providers</em>. Turn off direct listing site syndication.</div></div>
+    <div class="sys-row"><span class="sys-icon">🏗️</span><div class="sys-text"><b>Buildium</b> — Go to listing settings and turn off syndication to direct listing sites.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔗</span><div class="sys-text"><b>MLS</b> — Turn off internet/third-party syndication in MLS settings.</div></div>
+    <div class="sys-row"><span class="sys-icon">⚙️</span><div class="sys-text"><b>All other systems</b> — Find and disable internet or third-party syndication settings.</div></div>
+  </div>
   <div class="nr"><button class="bb" onclick="goTo('teams3')">← Back</button><button class="bn" onclick="goTo('company2')">Next →</button></div>
 </div>
 
@@ -466,27 +602,32 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 
 <!-- ══ SHOWINGS CO 1 ══ -->
 <div class="sc" id="sc-showings-co">
-  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (1/4) · AC / Both</span></div><h2 class="st">Accompanied Showing Settings</h2><p class="ss">Ask these questions naturally — each maps to a specific setting.</p></div>
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (1/4) · AC / Both</span></div><h2 class="st">Accompanied Showing Settings</h2><p class="ss">Ask these questions naturally — each maps to a specific setting. All can also be overridden at the unit level.</p></div>
   <div class="card"><div class="cl">
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Do you allow back-to-back showings at the same property?"</em> → <strong>Piggyback Maximum</strong></div><div class="ci-s">0 = disabled. Piggybacking = prospect books right before/after an existing showing at the same property.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For multifamily — <strong>Multifamily Piggyback Maximum</strong> (back-to-back across different units in the same building)</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Can multiple prospects book the same time slot at the same property?"</em> → <strong>Max Stacked Showings</strong></div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How long do your showings typically take?"</em> → <strong>Accompanied Showing Duration</strong></div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Can multiple prospects book the same time slot?"</em> → <strong>Max Stacked Showings</strong></div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"Do you allow back-to-back showings?"</em> → <strong>Piggyback Maximum</strong></div><div class="ci-s">0 = disabled. Piggybacking = prospect books right before/after an existing showing at same property.</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For multifamily — <strong>Multifamily Piggyback Maximum</strong> (back-to-back across units in same building)</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How many times per day to the same property?"</em> → <strong>Max Visits Per Property Per Day</strong></div><div class="ci-s">Recommendation: 1. Stacked/piggybacked showings don't count as extra trips.</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How many times per day should an agent visit the same property?"</em> → <strong>Max Visits Per Property Per Day</strong></div><div class="ci-s">Recommendation: 1. Stacked/piggybacked showings don't count as extra trips.</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Max Visits Per Unit Per Week</strong> if applicable</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How long does it typically take to drive between your properties?"</em> → <strong>Drive Time Buffer (%)</strong></div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"We use <span class="kw">Google Maps drive time</span> between showings automatically. But if you want a buffer on top of that — say, traffic or parking — you can add a percentage here. So if Google says 10 minutes, a 20% buffer makes it 12 minutes."</p></div></div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Ask: <em>"How far out do prospects typically schedule showings at your units?"</em> → <strong>Minimum Notice Period</strong></div><div class="ci-s">Hours before a showing can be booked. Default: 24h. Can also be overridden at the unit level.</div></div></div>
   </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">👤 Agent Assignment Settings — Read Before Setting</div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Assign Unassigned Leads to Agent on Showing</b> — When a prospect books their first accompanied showing with no agent assigned yet, the system auto-assigns them to that showing's agent. <em>Does not overwrite manual assignments.</em><br><br>⚠️ Side effect: once assigned, that prospect can only book future showings where that <em>same agent is on the unit's agent list</em>. If the agent isn't assigned to a property, the prospect sees zero availability there.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔕</span><div class="sys-text"><b>Only Schedule Showings with Lead's Assigned Agent</b> — <em>This toggle does nothing in the backend.</em> The prospect-assigned filter already runs unconditionally. If you want to avoid the restriction: keep prospects unassigned, assign them to multiple agents, or turn off Smart Assign per property.</div></div>
+    <div class="sys-row"><span class="sys-icon">💡</span><div class="sys-text"><b>When to turn on Assign Unassigned Leads:</b> dedicated-agent properties where one agent owns a prospect from first tour onward. <b>Leave OFF</b> if prospects tour multiple properties or you use flex/floating agents.</div></div>
+  </div>
   <div class="nr"><button class="bb" id="bb-showings-co" onclick="backFromShowingsCo()">← Back</button><button class="bn" onclick="goTo('showings-co2')">Next →</button></div>
 </div>
 
 <!-- ══ SHOWINGS CO 2 ══ -->
 <div class="sc" id="sc-showings-co2">
-  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (2/4) · AC / Both</span></div><h2 class="st">Timing, Confirmation & Feedback</h2></div>
+  <div class="sh"><div class="se">Module 1 — Settings <span>· Settings › Showings (2/4) · AC / Both</span></div><h2 class="st">Confirmation, Cancellation & Feedback</h2></div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Minimum Notice Period</strong> — hours before a showing can be booked</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Send Confirmation Before Showing</strong> — minutes before to send confirmation SMS</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Auto-Cancel for Unconfirmed Showings</strong> — minutes before to auto-cancel if not confirmed</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Drive Time Buffer (%)</strong> — extra buffer on top of Google Maps drive time</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Review agent assignment settings — only for commission-based external agents</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Send Confirmation Before Showing</strong> — minutes before showing to send confirmation SMS to prospect</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Auto-Cancel for Unconfirmed Showings</strong> — minutes before to auto-cancel if prospect never confirmed</div><div class="ci-s">e.g. Send confirmation 180min before → auto-cancel 90min before if not confirmed</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Enable <strong>Send Feedback Form After Accompanied Showing</strong></div><div class="spw"><button class="spt" onclick="tsp(event,this)">💬 Script <span class="arr">▼</span></button><div class="spb"><p>"~30 min after the showing ends, the prospect gets an SMS asking their next step — apply, still deciding, or not interested. That response <span class="kw">automatically updates their status</span>. No response in 2 hours? System closes it automatically."</p></div></div></div></div>
   </div></div>
   <div class="nr"><button class="bb" onclick="goTo('showings-co')">← Back</button><button class="bn" onclick="goTo('showings-co3')">Next →</button></div>
@@ -534,10 +675,18 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 <div class="sc" id="sc-prescreening2">
   <div class="sh"><div class="se">Module 1 — Settings <span>· Prescreening (2/2)</span></div><h2 class="st">Fraud Guard & Multiple Templates</h2></div>
   <div class="card"><div class="cl">
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain <strong>Fraud Guard</strong> — ID verification and duplicate detection after prescreening</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through Fraud Guard settings — explain each option</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Explain how to create <strong>multiple templates</strong> for properties with different rental criteria</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Make any needed changes to the template together during the call</div></div></div>
   </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🛡️ Fraud Guard — What Each Setting Does</div>
+    <div class="sys-row"><span class="sys-icon">🪪</span><div class="sys-text"><b>Require valid photo ID</b> — prospect must upload a government-issued ID. Sub-options: require a matching selfie + liveness check, allow camera roll upload, skip ID check if prescreening criteria not met, allow IDs without expiry date, allow expired IDs up to X days, minimum age requirement.</div></div>
+    <div class="sys-row"><span class="sys-icon">📵</span><div class="sys-text"><b>Require valid non-VoIP phone number</b> — blocks prospects using virtual/VoIP numbers (common in fraud attempts).</div></div>
+    <div class="sys-row"><span class="sys-icon">🌐</span><div class="sys-text"><b>Enroll in Global Blocklist</b> — prospects blocklisted by other property managers on RentEngine will be blocked automatically at prescreening.</div></div>
+    <div class="sys-row"><span class="sys-icon">📍</span><div class="sys-text"><b>Location verification (Self-Guided)</b> — prospect must be within the configured GPS radius (default 0.5 miles) from the property before their access code is shown.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔍</span><div class="sys-text"><b>Behavioral checks</b> — when triggered, future showings for that prospect require PM approval. Options: mismatched price interest (flags if prospect inquires about properties differing by more than X% from their usual range), repeat showing to same property, repeated prescreening rejections (flags after X rejections), showing started far from property (flags if showing starts more than X miles away).</div></div>
+  </div>
   <div class="nr"><button class="bb" onclick="goTo('prescreening')">← Back</button><button class="bn" onclick="goTo('notifications')">Next: Notifications →</button></div>
 </div>
 
@@ -561,15 +710,32 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show <strong>Lockbox History</strong> — who accessed what and when</div></div></div>
   </div></div>
   <div class="card-sys" style="margin-top:12px;">
-    <div class="card-sys-title">🔒 Compatible Lockboxes</div>
+    <div class="card-sys-title">🔒 Supported Lockboxes & Smart Locks</div>
+    <div class="sys-row"><span class="sys-icon">ℹ️</span><div class="sys-text">RentEngine automatically generates access codes when a prospect arrives. Codes are released through their showing link — with optional <em>GPS location verification</em> before the code is shown.</div></div>
+
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);margin:12px 0 6px;">📦 Digital Lockboxes (hang on door, generate codes)</div>
     <div class="lb-grid">
-      <div class="lb-card"><div class="lb-name">Sentrilock</div><div class="lb-detail">8-digit code. Most common. Hardware key fob or app.</div></div>
-      <div class="lb-card"><div class="lb-name">Rently</div><div class="lb-detail">Smart lockbox. Prospect app or code. Auto-tracks access.</div></div>
-      <div class="lb-card"><div class="lb-name">Combo Lockbox</div><div class="lb-detail">4-digit code. No hardware needed. PM enters code manually in RentEngine.</div></div>
+      <div class="lb-card"><div class="lb-name">Codebox</div><div class="lb-detail">Unique code per showing. Enter code + press logo to open. $2/mo per box (billed by Codebox).</div></div>
+      <div class="lb-card"><div class="lb-name">SentriLock</div><div class="lb-detail">One code per showing. Enter: ENT + code + ENT on keypad. Most common.</div></div>
+      <div class="lb-card"><div class="lb-name">Rently</div><div class="lb-detail">Numeric code. Default window: 2 hrs before/after scheduled time.</div></div>
     </div>
+
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);margin:12px 0 6px;">🔐 Smart Deadbolts (installed on door, PIN codes)</div>
+    <div class="lb-grid">
+      <div class="lb-card"><div class="lb-name">IglooWorks</div><div class="lb-detail">One-time, hourly, or daily codes. Works offline (Bluetooth). $3/mo per lock.</div></div>
+      <div class="lb-card"><div class="lb-name">TTLock</div><div class="lb-detail">No monthly fee. One-time (OTP), permanent, or timed codes. Cost-effective option.</div></div>
+      <div class="lb-card"><div class="lb-name">eRentalLock</div><div class="lb-detail">Schlage hardware. One-time code valid for the showing day.</div></div>
+    </div>
+    <div class="lb-grid" style="grid-template-columns:1fr 1fr;margin-top:6px;">
+      <div class="lb-card"><div class="lb-name">Master Lock Vault</div><div class="lb-detail">Temporary code with specific validity window.</div></div>
+      <div class="lb-card"><div class="lb-name">PointCentral</div><div class="lb-detail">Access slot tied to showing time window.</div></div>
+    </div>
+
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--orange);margin:12px 0 6px;">🔑 Manual / Static Code</div>
+    <div class="sys-row"><span class="sys-icon">📝</span><div class="sys-text"><b>Combo Lockbox (not integrated)</b> — Enter a static code in the unit's access instructions. RentEngine displays it to the prospect through their showing link. Code stays active until you manually update it in unit settings.</div></div>
+
     <div style="margin-top:10px;">
-      <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text"><em>Deadbolt locks are not supported</em> — lockbox must be the primary access method. Combo codes are static and do not auto-expire.</div></div>
-      <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Trusted Contacts</b> receive a setup email from RentEngine with instructions. <em>Only Admins can add them.</em> They can access outside scheduled showing windows.</div></div>
+      <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Trusted Contacts</b> receive a setup email with instructions. <em>Only Admins can add them.</em> They text the lockbox serial number to a RentEngine number to receive an access code. Access is logged in lockbox history.</div></div>
     </div>
   </div>
   <div class="nr"><button class="bb" onclick="goTo('notifications')">← Back</button><button class="bn" onclick="goTo('properties')">Next: Properties →</button></div>
@@ -593,7 +759,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Most fields come from the PMS — pre-populated automatically</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Property Owner</strong> — add owner, enable weekly reports, toggle feedback inclusion</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Property description and details must be filled in <strong>manually</strong> — PMS doesn't provide this</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Earliest Move-In Date</strong> — auto-populated from AppFolio and Rentec Direct only; manual for all others</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Earliest Move-In Date</strong> — auto-populated from <strong>AppFolio</strong> and <strong>RentVine</strong> only; must be entered manually for all other PMSs</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Early Showing Date</strong> — always manual; controls when showings can start</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Click <strong>Next</strong> or the step number at the top to save — changes aren't saved otherwise</div></div></div>
   </div></div>
@@ -672,25 +838,29 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Walk through the right panel — prospect info, status, assigned property</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">Show how to add a <strong>Note</strong> or set a <strong>Follow-Up</strong> reminder</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Light blue boxes</strong> — internal system info only, never visible to prospects (prescreen results)</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Dark boxes</strong> — outbound messages from RentEngine or your team</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Dark boxes</strong> — outbound messages sent to the prospect (from RentEngine automatically, or your team manually)</div></div></div>
   </div></div>
   <div class="card-sys" style="margin-top:12px;">
-    <div class="card-sys-title">📨 Automated Message Cadence — Status Triggered</div>
-    <div class="sys-row"><span class="sys-icon">🟢</span><div class="sys-text"><b>Price Drop Alert</b> — sent to: <em>Contacted, ShowingDesired, StillDeciding, AppSent, Ghosting, MissedShowing, ShowingFailed</em> and a few more. Skipped if no inbound activity in 60 days.</div></div>
-    <div class="sys-row"><span class="sys-icon">🔴</span><div class="sys-text"><b>Unit No Longer Available</b> — sent to most active statuses. Skipped for: Withdrawn, NotInterested, Ghosting, ApplicationReceived+, LeaseSigned, MovedIn.</div></div>
-    <div class="sys-row"><span class="sys-icon">🔵</span><div class="sys-text"><b>Unit Ready for Showing</b> (back on market) — sent to: <em>Contacted, New, ShowingDesired, ShowingCanceled only.</em> All other statuses skipped.</div></div>
-    <div class="sys-row"><span class="sys-icon">⚫</span><div class="sys-text"><b>Post-Showing Follow-up</b> — blocked entirely if prospect is <em>Withdrawn, Ghosting, or NotInterested</em> at time of ShowingComplete.</div></div>
-    <div class="sys-row"><span class="sys-icon">🤖</span><div class="sys-text">These messages are <b>not AI</b> — they're status-triggered templates. Go to <em>Settings › Communication › Messages</em> to review and customize.</div></div>
+    <div class="card-sys-title">💬 How Text Communication Works — Two Channels</div>
+    <div class="sys-row"><span class="sys-icon">⚡</span><div class="sys-text"><b>Channel 1 — Automatic Messages</b>: Status-triggered templates that fire without anyone doing anything. Welcome message, follow-up nudges, reschedule links, price drop alerts. These are <em>not AI</em> — they're pre-built templates. Customize at Settings › Communication › Messages.</div></div>
+    <div class="sys-row"><span class="sys-icon">🤖</span><div class="sys-text"><b>Channel 2 — AI or Manual Replies</b>: When a prospect asks a question, the automatic templates don't respond to it. That's handled either by <em>RentEngine AI</em> (answering from property data + Snippets) or by a <em>team member replying manually</em>. Both channels coexist in the same conversation thread.</div></div>
+  </div>
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">📨 Automatic Messages — Status Triggered</div>
+    <div class="sys-row"><span class="sys-icon">🟢</span><div class="sys-text"><b>Price Drop Alert</b> — sent to: Contacted, ShowingDesired, StillDeciding, AppSent, Unresponsive, MissedShowing, ShowingFailed and a few more. Skipped if no inbound activity in 60 days.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔴</span><div class="sys-text"><b>Unit No Longer Available</b> — sent to most active statuses. Skipped for: Withdrawn, NotInterested, Unresponsive, ApplicationReceived+, LeaseSigned, MovedIn.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔵</span><div class="sys-text"><b>Unit Ready for Showing</b> (back on market) — sent to: Contacted, New, ShowingDesired, ShowingCanceled only. All other statuses skipped.</div></div>
+    <div class="sys-row"><span class="sys-icon">⚫</span><div class="sys-text"><b>Post-Showing Follow-up</b> — blocked entirely if prospect is Withdrawn, Unresponsive, or NotInterested at time of ShowingComplete.</div></div>
   </div>
   <div class="card-sys" style="margin-top:10px;">
     <div class="card-sys-title">📬 Follow-Up Cadences by Stage</div>
-    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Pre-showing</b> (New / Contacted / ShowingDesired) — up to <em>3 SMS nudges</em>: ~24h → 20h → 24h → final 48h. If no reply → marked <em>Unresponsive (Ghosting)</em>, follow-ups stop.</div></div>
+    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Pre-showing</b> (New / Contacted / ShowingDesired) — up to <em>3 SMS nudges</em>: ~24h → 20h → 24h → final 48h. If no reply → marked <em>Unresponsive</em>, follow-ups stop.</div></div>
     <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Incomplete Application</b> — up to <em>4 SMS over ~3 days</em>: +6h → +18h → +24h → +24h. Messages are personalized to the section they dropped off on. Final: <em>"I'll go ahead and close out your file."</em></div></div>
-    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Post-Showing — App Link Sent</b> — up to <em>3 SMS</em>. Auto-send: first ~4h after showing, then +24h, +48h → Ghosting. Manual-send: first ~24h after agent sends, then same chain.</div></div>
-    <div class="sys-row"><span class="sys-icon">4️⃣</span><div class="sys-text"><b>Post-Showing — Still Deciding</b> — up to <em>3 SMS</em>: ~18h after showing → +48h → +40h → Ghosting.</div></div>
+    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Post-Showing — App Link Sent</b> — up to <em>3 SMS</em>. Auto-send: first ~4h after showing, then +24h, +48h → Unresponsive. Manual-send: first ~24h after agent sends, then same chain.</div></div>
+    <div class="sys-row"><span class="sys-icon">4️⃣</span><div class="sys-text"><b>Post-Showing — Still Deciding</b> — up to <em>3 SMS</em>: ~18h after showing → +48h → +40h → Unresponsive.</div></div>
     <div class="sys-row"><span class="sys-icon">5️⃣</span><div class="sys-text"><b>Failed / Missed / Canceled Showing</b> — <em>1–2 reschedule nudges</em>: immediate link → +24h if no rebook → stops.</div></div>
     <div class="sys-row"><span class="sys-icon">🔔</span><div class="sys-text"><b>Showing Reminders</b> — separate from follow-ups. <em>Accompanied:</em> confirmation SMS 180min before, auto-cancel 90min before if unconfirmed. <em>Self-guided:</em> link 1h before, never auto-canceled. All reminders clamped to <em>8am–8pm local time</em>.</div></div>
-    <div class="sys-row"><span class="sys-icon">🛑</span><div class="sys-text"><b>Follow-ups stop immediately</b> when status hits: <em>NotInterested, Withdrawn, Ghosting, Blocklist, AppRejected, AppApproved, LeaseSigned, MovedIn, DuplicateLead, UnitUnavailable.</em> Also pause if prospect replied within last 32h or unit is On Hold.</div></div>
+    <div class="sys-row"><span class="sys-icon">🛑</span><div class="sys-text"><b>Follow-ups stop immediately</b> when status hits: <em>NotInterested, Withdrawn, Unresponsive, Blocklist, AppRejected, AppApproved, LeaseSigned, MovedIn, DuplicateLead, UnitUnavailable.</em> Also pause if prospect replied within last 32h or unit is On Hold.</div></div>
   </div>
   <div class="card-sys" style="margin-top:10px;">
     <div class="card-sys-title">🔕 Statuses That Receive No Automated Messages</div>
@@ -707,7 +877,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
       <div class="status-chip sc-skip">Duplicate Lead</div>
       <div class="status-chip sc-skip">HOA App Submitted/Approved/Rejected</div>
       <div class="status-chip sc-skip">Lease Out For Signing</div>
-      <div class="status-chip sc-partial">Ghosting / Unresponsive</div>
+      <div class="status-chip sc-partial">Unresponsive</div>
       <div class="status-chip sc-partial">Application Received</div>
       <div class="status-chip sc-partial">Looking Too Early</div>
       <div class="status-chip sc-partial">Unit of Interest Unavailable</div>
@@ -727,15 +897,19 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><span class="tag twarn">⚠️ Recommend</span> Don't enable AI yet — verify property info, build Snippets first</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">AI escalation: black dot + push notification + email when AI can't answer</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">AI response timing tied to <strong>Office Hours</strong> in Settings › Company</div></div></div>
-    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Pause for questions</strong> — is text communication clear?</div></div></div>
+    <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Pause for questions</strong> — is everything about messaging clear?</div></div></div>
   </div></div>
   <div class="card-sys" style="margin-top:12px;">
-    <div class="card-sys-title">🤖 SMS AI — What It Handles vs. Skips</div>
-    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>AI replies</b> for: New, Contacted, ShowingDesired, ShowingPending/Scheduled, Ghosting, NotInterested, Withdrawn (treated as inactive — AI allows new property search)</div></div>
-    <div class="sys-row"><span class="sys-icon">🔇</span><div class="sys-text"><b>Silent stop</b> (no reply, no alert): LeaseSigned, MovedIn, AppApproved/Rejected (&lt;7d), PrescreenRejected (&lt;2d), HOA statuses, DepositReceived</div></div>
-    <div class="sys-row"><span class="sys-icon">📣</span><div class="sys-text"><b>Escalates to PM</b>: ShowingFailed, ApplicationInOwnerReview</div></div>
-    <div class="sys-row"><span class="sys-icon">📞</span><div class="sys-text"><b>Voice AI</b> answers calls for: New, Contacted, ShowingDesired, MissedShowing, Withdrawn, NotInterested, Ghosting, ShowingPending/Canceled, DuplicateLead. <em>Bypasses AI</em> if prospect has ShowingScheduled, ShowingConfirmed, AppReceived+, LeaseSigned, MovedIn, etc.</div></div>
-    <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text">Voice AI checks <b>all</b> of a caller's prospects — if even one has a non-whitelisted status, the whole call goes to human forwarding.</div></div>
+    <div class="card-sys-title">📱 SMS AI — How It Handles Prospect Messages</div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>AI replies normally</b> for: New, Contacted, ShowingDesired, ShowingPending/Scheduled. For Unresponsive, NotInterested, Withdrawn — AI treats them as inactive and allows new property search.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔇</span><div class="sys-text"><b>Silent stop</b> (no reply, no alert to team): LeaseSigned, MovedIn, AppApproved/Rejected (&lt;7d), PrescreenRejected (&lt;2d), HOA statuses, DepositReceived, LeaseOutForSigning.</div></div>
+    <div class="sys-row"><span class="sys-icon">📣</span><div class="sys-text"><b>Escalates to PM</b> (flags thread + notifies team): ShowingFailed, ApplicationInOwnerReview.</div></div>
+  </div>
+  <div class="card-sys" style="margin-top:10px;">
+    <div class="card-sys-title">📞 Voice AI — How Inbound Calls Are Routed</div>
+    <div class="sys-row"><span class="sys-icon">✅</span><div class="sys-text"><b>Voice AI answers</b> when the caller's prospects are in: New, Contacted, ShowingDesired, MissedShowing, Withdrawn, NotInterested, Unresponsive, ShowingPending/Canceled, DuplicateLead. No matching prospect = Voice AI also picks up and creates a new one.</div></div>
+    <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Goes to human forwarding</b> when the caller has a prospect in: ShowingScheduled, ShowingConfirmed, AppReceived/Approved/Rejected, LeaseSigned, MovedIn, PrescreenApproved/Rejected, HOA statuses.</div></div>
+    <div class="sys-row"><span class="sys-icon">⚠️</span><div class="sys-text"><b>Important:</b> Voice AI checks <em>all</em> of a caller's recent prospects (last 60 days). Think of it like a bouncer with a list — if <em>any one</em> of their open cases is in a "no AI" status (like ShowingScheduled or AppReceived), the entire call goes to a human — even if the other prospects would qualify. It only takes one.</div></div>
   </div>
   <div class="nr"><button class="bb" onclick="goTo('cc2')">← Back</button><button class="bn" onclick="goTo('cc4')">Next →</button></div>
 </div>
@@ -753,19 +927,27 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t"><strong>Blocklist</strong> — block abusive prospects from scheduling future showings</div></div></div>
     <div class="ci" onclick="toggleCi(this)"><div class="cb">✓</div><div class="ci-b"><div class="ci-t">For large teams — explain <strong>Sub-Teams</strong> and how they route communication per property</div></div></div>
   </div></div>
+  <div class="card-sys" style="margin-top:12px;">
+    <div class="card-sys-title">🔑 Self-Guided Showing — Prospect Experience</div>
+    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Arrives at property</b> → clicks their showing link → location check + timing gate (available 45min before, up to 60min after scheduled time) → clicks <em>"I've Arrived"</em>.</div></div>
+    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Access Instructions shown</b> — lockbox location, code, gate codes, PM notes. Prospect taps <em>"I'm in"</em> or <em>"I'm having trouble."</em></div></div>
+    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Feedback form</b> — Required: next step (apply / still deciding / not interested). Optional: likes, dislikes, star rating. Must lock up before submitting.</div></div>
+    <div class="sys-row"><span class="sys-icon">⏱️</span><div class="sys-text"><b>Auto-complete at 45 min</b>: if ShowingStarted/Arrived → marked Complete → gets feedback SMS + application link. If never arrived → marked <em>MissedShowing.</em></div></div>
+    <div class="sys-row"><span class="sys-icon">🚫</span><div class="sys-text"><b>Self-guided showings are NOT auto-canceled.</b> No confirmation required. They stay in ShowingScheduled until the prospect arrives or 45 min passes.</div></div>
+  </div>
   <div class="nr"><button class="bb" onclick="goTo('cc3')">← Back</button><button class="bn" onclick="goTo('cc5')">Next →</button></div>
 </div>
 
-<!-- ══ CC 5 ══ -->
+<!-- ══ CC 5 — Showing Methods ══ -->
 <div class="sc" id="sc-cc5">
-  <div class="sh"><div class="se">Module 3 — Command Center <span>· (5/5)</span></div><h2 class="st">Self-Guided Showing Flow</h2></div>
+  <div class="sh"><div class="se">Module 3 — Command Center <span>· (5/5)</span></div><h2 class="st">Showing Methods — Overview</h2><p class="ss">All showings can be manually scheduled, reassigned, rescheduled, and cancelled from the Command Center at any time.</p></div>
   <div class="card-sys">
-    <div class="card-sys-title">🔑 Self-Guided Prospect Experience</div>
-    <div class="sys-row"><span class="sys-icon">1️⃣</span><div class="sys-text"><b>Ready for your tour?</b> — Prospect clicks their link. Location check + timing gate (available 45min before, up to 60min after scheduled time). Must click <em>"I've Arrived"</em>.</div></div>
-    <div class="sys-row"><span class="sys-icon">2️⃣</span><div class="sys-text"><b>Access Instructions</b> — Shows lockbox location, codes, gate codes, PM notes. Can tap <em>"I'm in"</em> or <em>"I'm having trouble."</em></div></div>
-    <div class="sys-row"><span class="sys-icon">3️⃣</span><div class="sys-text"><b>Feedback form</b> — Required: next step (apply / still deciding / not interested). Optional: likes, dislikes, star rating. Must lock up before submitting.</div></div>
-    <div class="sys-row"><span class="sys-icon">⏱️</span><div class="sys-text"><b>Auto-complete</b>: 45 min after scheduled time, if status is ShowingStarted/Arrived → marked Complete → prospect gets feedback SMS + application link. If they never arrived → marked <em>MissedShowing.</em></div></div>
-    <div class="sys-row"><span class="sys-icon">❌</span><div class="sys-text"><b>Self-guided showings are NOT auto-canceled</b> — no confirmation required from the prospect. They stay in ShowingScheduled indefinitely until they arrive or 45min passes.</div></div>
+    <div class="card-sys-title">📋 5 Showing Methods at a Glance</div>
+    <div class="sys-row"><span class="sys-icon">👤</span><div class="sys-text"><b>Accompanied</b> — Agent meets prospect in person. Availability from agent's personal showing windows. Smart Assign scores available agents per slot. Prospect receives SMS with reschedule link + optional meeting location.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔑</span><div class="sys-text"><b>Self-Guided</b> — Prospect tours alone using a lockbox code. 30-min slots, no agent involved. Slot only blocked if another showing already overlaps. Code generated when prospect clicks "I've Arrived" (digital) or static code shown (manual).</div></div>
+    <div class="sys-row"><span class="sys-icon">📱</span><div class="sys-text"><b>Remote Guided</b> — Prospect tours alone while on a call with a leasing agent who guides them. 30-min slots, no agent auto-assigned. Prospect receives SMS to call leasing team on arrival. No lockbox code sent.</div></div>
+    <div class="sys-row"><span class="sys-icon">🏢</span><div class="sys-text"><b>Remote Guided with Gated Access</b> — Same as Remote Guided but requires at least 14 hours advance notice so staff can arrange gate access before the showing.</div></div>
+    <div class="sys-row"><span class="sys-icon">🔀</span><div class="sys-text"><b>Accompanied or Self-Guided (Combined)</b> — Both run independently. Slots where an agent is already on-site → Accompanied only. Slots that overlap both → prospect picks one. Slots with no agent → Self-Guided only.</div></div>
   </div>
   <div class="nr"><button class="bb" onclick="goTo('cc4')">← Back</button><button class="bn" onclick="goTo('calendar')">Next: Showings Calendar →</button></div>
 </div>
@@ -904,16 +1086,121 @@ function startChecklist(){
   if(!isSG)document.getElementById('sb-lockboxes').style.display='none';
   goTo('welcome');
 }
+// Sections that have accordion sub-items
+const ACC_SECS=['teams','company','personal-avail','showings-co','prescreening','properties','cc','calendar'];
+
 function goTo(id){
   document.querySelectorAll('.sc').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sc-'+id);
   if(el)el.classList.add('vis');
+
   const sec=S2S[id]||id;
-  document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('active');if(e.id==='sb-'+sec)e.classList.add('active');if(e.id==='sb-gate'&&id==='gate')e.classList.add('active');});
+
+  // Update main sidebar active
+  document.querySelectorAll('.sb-item').forEach(e=>{
+    e.classList.remove('active');
+    if(e.id==='sb-'+sec)e.classList.add('active');
+    if(e.id==='sb-gate'&&id==='gate')e.classList.add('active');
+  });
+
+  // Accordion: if clicking same section that's already open, toggle it; otherwise open it
+  const acc=document.getElementById('acc-'+sec);
+  const alreadyOpen=acc&&acc.classList.contains('open');
+  const sameSection=(S2S[id]||id)===sec;
+
+  document.querySelectorAll('.sb-acc').forEach(a=>a.classList.remove('open'));
+  if(ACC_SECS.includes(sec)){
+    // Always open when navigating via Next/Back (id is a substep), or when clicking a different section
+    // Only close if clicking the parent label of the section that was already open
+    if(acc&&!(alreadyOpen&&sameSection&&id===sec)){
+      acc.classList.add('open');
+    }
+  }
+
+  // Sub-item active state
+  document.querySelectorAll('.sb-sub').forEach(s=>s.classList.remove('sub-active'));
+  const activeSub=document.getElementById('sub-'+id);
+  if(activeSub)activeSub.classList.add('sub-active');
+
+  // Scroll sub-item into view in sidebar if needed
+  if(activeSub){
+    const sidebar=document.querySelector('.sidebar');
+    const subTop=activeSub.offsetTop;
+    const sidebarH=sidebar.clientHeight;
+    if(subTop>sidebar.scrollTop+sidebarH-60||subTop<sidebar.scrollTop){
+      sidebar.scrollTo({top:subTop-80,behavior:'smooth'});
+    }
+  }
+
   document.getElementById('main').scrollTop=0;
   updateProgress();
+  updateSubDoneState();
+  syncAccCarets();
 }
-function toggleCi(el){el.classList.toggle('ck');const sc=el.closest('.sc');if(sc)syncSb(S2S[sc.id.replace('sc-','')]);updateProgress();}
+// Called when clicking a section label in the sidebar
+// If section already active and accordion open → close accordion (collapse)
+// If section already active and accordion closed → open accordion
+// If different section → navigate to first step AND open accordion
+function sidebarClick(sid){
+  const acc=document.getElementById('acc-'+sid);
+  const sbItem=document.getElementById('sb-'+sid);
+  const isActive=sbItem&&sbItem.classList.contains('active');
+  const isOpen=acc&&acc.classList.contains('open');
+
+  if(isActive&&acc){
+    // Toggle accordion without re-navigating
+    acc.classList.toggle('open');
+    sbItem.classList.toggle('acc-open',acc.classList.contains('open'));
+  } else {
+    // Navigate to first step of section — goTo will open the accordion
+    const firstStep=SECS[sid]&&SECS[sid][0];
+    if(firstStep)goTo(firstStep);
+  }
+}
+
+// Sync acc-open class (for caret) on all accordion parents after goTo
+function syncAccCarets(){
+  document.querySelectorAll('.has-acc').forEach(item=>{
+    const sid=item.id.replace('sb-','');
+    const acc=document.getElementById('acc-'+sid);
+    if(acc)item.classList.toggle('acc-open',acc.classList.contains('open'));
+  });
+}
+
+function subToggle(stepId, e){
+  e.stopPropagation();
+  const sub=document.getElementById('sub-'+stepId);
+  const sc=document.getElementById('sc-'+stepId);
+  if(!sc||!sub)return;
+  const all=sc.querySelectorAll('.ci');
+  const done=sc.querySelectorAll('.ci.ck');
+  const nowDone=done.length!==all.length;
+  all.forEach(ci=>ci.classList.toggle('ck',nowDone));
+  sub.classList.toggle('sub-done',nowDone);
+  syncSubCc(stepId,nowDone);
+  // also sync the parent section
+  const sec=S2S[stepId];
+  if(sec)syncSb(sec);
+  updateProgress();
+}
+function syncSubCc(stepId,done){
+  const cc=document.getElementById('ssbc-'+stepId);
+  if(cc){cc.style.background=done?'var(--green)':'';cc.style.borderColor=done?'var(--green)':'';cc.style.color=done?'#fff':'transparent';}
+}
+function updateSubDoneState(){
+  document.querySelectorAll('.sb-sub').forEach(sub=>{
+    const stepId=sub.id.replace('sub-','');
+    const sc=document.getElementById('sc-'+stepId);
+    if(!sc)return;
+    const all=sc.querySelectorAll('.ci');
+    const done=sc.querySelectorAll('.ci.ck');
+    const allDone=all.length>0&&done.length===all.length;
+    sub.classList.toggle('sub-done',allDone);
+    syncSubCc(stepId,allDone);
+  });
+}
+
+function toggleCi(el){el.classList.toggle('ck');const sc=el.closest('.sc');if(sc)syncSb(S2S[sc.id.replace('sc-','')]);updateProgress();updateSubDoneState();}
 function syncSb(sid){
   const steps=SECS[sid]||[];
   let t=0,d=0;
@@ -930,7 +1217,7 @@ function sbToggle(sid){
   steps.forEach(s=>{const sc=document.getElementById('sc-'+s);if(!sc)return;sc.querySelectorAll('.ci').forEach(ci=>{t++;if(ci.classList.contains('ck'))d++;});});
   const nowDone=d!==t;
   steps.forEach(s=>{const sc=document.getElementById('sc-'+s);if(!sc)return;sc.querySelectorAll('.ci').forEach(ci=>ci.classList.toggle('ck',nowDone));});
-  syncSb(sid);updateProgress();
+  syncSb(sid);updateProgress();updateSubDoneState();
 }
 function tsp(e,btn){e.stopPropagation();btn.classList.toggle('op');btn.nextElementSibling.classList.toggle('op');}
 function updateProgress(){
@@ -956,6 +1243,10 @@ function resetAll(){
   document.querySelectorAll('.sb-item').forEach(e=>{e.classList.remove('done','active');const rel=['sb-welcome','sb-teams','sb-company','sb-portfolio','sb-personal-avail','sb-showings-co','sb-prescreening','sb-notifications','sb-lockboxes','sb-properties','sb-cc','sb-calendar','sb-reports','sb-support','sb-data','sb-done'];if(rel.includes(e.id))e.classList.add('hi');});
   document.querySelectorAll('[id^="sbc-"]').forEach(e=>{e.style.background='';e.style.borderColor='';e.style.color='transparent';});
   ['sb-personal-avail','sb-lockboxes'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+  document.querySelectorAll('.sb-acc').forEach(a=>a.classList.remove('open'));
+  document.querySelectorAll('.has-acc').forEach(e=>e.classList.remove('acc-open'));
+  document.querySelectorAll('.sb-sub').forEach(s=>s.classList.remove('sub-active','sub-done'));
+  document.querySelectorAll('[id^="ssbc-"]').forEach(e=>{e.style.background='';e.style.borderColor='';e.style.color='transparent';});
   goTo('gate');
 }
 goTo('gate');
