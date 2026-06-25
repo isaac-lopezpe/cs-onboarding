@@ -48,7 +48,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 .sb-item.done .sb-dot{background:var(--green);}
 .sb-item.active .sb-dot{background:var(--orange);}
 .sb-item.hi{display:none;}
-.sb-nav{display:flex;align-items:center;gap:8px;flex:1;padding:8px 8px 8px 16px;min-width:0;cursor:pointer;}
+.sb-nav{display:flex;align-items:center;gap:8px;flex:1;padding:8px 8px 8px 16px;min-width:0;cursor:pointer;user-select:none;}
 .sb-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:.2s;}
 .sb-label{flex:1;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-ck{width:32px;min-height:34px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;opacity:0;transition:opacity .15s;border-left:1px solid rgba(255,255,255,.07);}
@@ -206,7 +206,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
 .sb-sub-dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:.2s;}
 .sb-sub.sub-active .sb-sub-dot{background:var(--orange);}
 .sb-sub.sub-done .sb-sub-dot{background:var(--green);}
-.sb-sub-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.sb-sub-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-sub-ck{width:28px;min-height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;opacity:0;transition:opacity .15s;border-left:1px solid rgba(255,255,255,.06);}
 .sb-sub:hover .sb-sub-ck{opacity:1;}
 .sb-sub.sub-done .sb-sub-ck{opacity:1;}
@@ -303,9 +303,9 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('teams')"><div class="sb-cc" id="sbc-teams">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-teams">
-    <div class="sb-sub" id="sub-teams"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams')">Team Members</span><div class="sb-sub-ck" onclick="subToggle('teams',event)"><div class="sb-sub-cc" id="ssbc-teams">✓</div></div></div>
-    <div class="sb-sub" id="sub-teams2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams2')">How to Log In</span><div class="sb-sub-ck" onclick="subToggle('teams2',event)"><div class="sb-sub-cc" id="ssbc-teams2">✓</div></div></div>
-    <div class="sb-sub" id="sub-teams3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('teams3')">User Roles</span><div class="sb-sub-ck" onclick="subToggle('teams3',event)"><div class="sb-sub-cc" id="ssbc-teams3">✓</div></div></div>
+    <div class="sb-sub" id="sub-teams" onclick="goTo('teams')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Team Members</span><div class="sb-sub-ck" onclick="subToggle('teams',event)"><div class="sb-sub-cc" id="ssbc-teams">✓</div></div></div>
+    <div class="sb-sub" id="sub-teams2" onclick="goTo('teams2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">How to Log In</span><div class="sb-sub-ck" onclick="subToggle('teams2',event)"><div class="sb-sub-cc" id="ssbc-teams2">✓</div></div></div>
+    <div class="sb-sub" id="sub-teams3" onclick="goTo('teams3')"><span class="sb-sub-dot"></span><span class="sb-sub-label">User Roles</span><div class="sb-sub-ck" onclick="subToggle('teams3',event)"><div class="sb-sub-cc" id="ssbc-teams3">✓</div></div></div>
   </div>
 
   <div class="sb-item hi has-acc" id="sb-company">
@@ -313,10 +313,10 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('company')"><div class="sb-cc" id="sbc-company">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-company">
-    <div class="sb-sub" id="sub-company"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company')">PMS Connection</span><div class="sb-sub-ck" onclick="subToggle('company',event)"><div class="sb-sub-cc" id="ssbc-company">✓</div></div></div>
-    <div class="sb-sub" id="sub-company2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company2')">Website Widget</span><div class="sb-sub-ck" onclick="subToggle('company2',event)"><div class="sb-sub-cc" id="ssbc-company2">✓</div></div></div>
-    <div class="sb-sub" id="sub-company3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company3')">Branding & Reports</span><div class="sb-sub-ck" onclick="subToggle('company3',event)"><div class="sb-sub-cc" id="ssbc-company3">✓</div></div></div>
-    <div class="sb-sub" id="sub-company4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('company4')">Market Tool & Hours</span><div class="sb-sub-ck" onclick="subToggle('company4',event)"><div class="sb-sub-cc" id="ssbc-company4">✓</div></div></div>
+    <div class="sb-sub" id="sub-company" onclick="goTo('company')"><span class="sb-sub-dot"></span><span class="sb-sub-label">PMS Connection</span><div class="sb-sub-ck" onclick="subToggle('company',event)"><div class="sb-sub-cc" id="ssbc-company">✓</div></div></div>
+    <div class="sb-sub" id="sub-company2" onclick="goTo('company2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Website Widget</span><div class="sb-sub-ck" onclick="subToggle('company2',event)"><div class="sb-sub-cc" id="ssbc-company2">✓</div></div></div>
+    <div class="sb-sub" id="sub-company3" onclick="goTo('company3')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Branding & Reports</span><div class="sb-sub-ck" onclick="subToggle('company3',event)"><div class="sb-sub-cc" id="ssbc-company3">✓</div></div></div>
+    <div class="sb-sub" id="sub-company4" onclick="goTo('company4')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Market Tool & Hours</span><div class="sb-sub-ck" onclick="subToggle('company4',event)"><div class="sb-sub-cc" id="ssbc-company4">✓</div></div></div>
   </div>
 
   <div class="sb-item hi" id="sb-portfolio">
@@ -329,8 +329,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('personal-avail')"><div class="sb-cc" id="sbc-personal-avail">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-personal-avail">
-    <div class="sb-sub" id="sub-personal-avail"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('personal-avail')">General Availability</span><div class="sb-sub-ck" onclick="subToggle('personal-avail',event)"><div class="sb-sub-cc" id="ssbc-personal-avail">✓</div></div></div>
-    <div class="sb-sub" id="sub-personal-avail2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('personal-avail2')">Calendar Integration</span><div class="sb-sub-ck" onclick="subToggle('personal-avail2',event)"><div class="sb-sub-cc" id="ssbc-personal-avail2">✓</div></div></div>
+    <div class="sb-sub" id="sub-personal-avail" onclick="goTo('personal-avail')"><span class="sb-sub-dot"></span><span class="sb-sub-label">General Availability</span><div class="sb-sub-ck" onclick="subToggle('personal-avail',event)"><div class="sb-sub-cc" id="ssbc-personal-avail">✓</div></div></div>
+    <div class="sb-sub" id="sub-personal-avail2" onclick="goTo('personal-avail2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Calendar Integration</span><div class="sb-sub-ck" onclick="subToggle('personal-avail2',event)"><div class="sb-sub-cc" id="ssbc-personal-avail2">✓</div></div></div>
   </div>
 
   <div class="sb-item hi has-acc" id="sb-showings-co">
@@ -338,10 +338,10 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('showings-co')"><div class="sb-cc" id="sbc-showings-co">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-showings-co">
-    <div class="sb-sub" id="sub-showings-co"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co')">Accompanied Settings</span><div class="sb-sub-ck" onclick="subToggle('showings-co',event)"><div class="sb-sub-cc" id="ssbc-showings-co">✓</div></div></div>
-    <div class="sb-sub" id="sub-showings-co2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co2')">Confirmation & Feedback</span><div class="sb-sub-ck" onclick="subToggle('showings-co2',event)"><div class="sb-sub-cc" id="ssbc-showings-co2">✓</div></div></div>
-    <div class="sb-sub" id="sub-showings-co3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co3')">All Showings</span><div class="sb-sub-ck" onclick="subToggle('showings-co3',event)"><div class="sb-sub-cc" id="ssbc-showings-co3">✓</div></div></div>
-    <div class="sb-sub" id="sub-showings-co4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('showings-co4')">Windows & Templates</span><div class="sb-sub-ck" onclick="subToggle('showings-co4',event)"><div class="sb-sub-cc" id="ssbc-showings-co4">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co" onclick="goTo('showings-co')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Accompanied Settings</span><div class="sb-sub-ck" onclick="subToggle('showings-co',event)"><div class="sb-sub-cc" id="ssbc-showings-co">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co2" onclick="goTo('showings-co2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Confirmation & Feedback</span><div class="sb-sub-ck" onclick="subToggle('showings-co2',event)"><div class="sb-sub-cc" id="ssbc-showings-co2">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co3" onclick="goTo('showings-co3')"><span class="sb-sub-dot"></span><span class="sb-sub-label">All Showings</span><div class="sb-sub-ck" onclick="subToggle('showings-co3',event)"><div class="sb-sub-cc" id="ssbc-showings-co3">✓</div></div></div>
+    <div class="sb-sub" id="sub-showings-co4" onclick="goTo('showings-co4')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Windows & Templates</span><div class="sb-sub-ck" onclick="subToggle('showings-co4',event)"><div class="sb-sub-cc" id="ssbc-showings-co4">✓</div></div></div>
   </div>
 
   <div class="sb-item hi has-acc" id="sb-prescreening">
@@ -349,8 +349,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('prescreening')"><div class="sb-cc" id="sbc-prescreening">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-prescreening">
-    <div class="sb-sub" id="sub-prescreening"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('prescreening')">Questions & Move-In</span><div class="sb-sub-ck" onclick="subToggle('prescreening',event)"><div class="sb-sub-cc" id="ssbc-prescreening">✓</div></div></div>
-    <div class="sb-sub" id="sub-prescreening2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('prescreening2')">Fraud Guard</span><div class="sb-sub-ck" onclick="subToggle('prescreening2',event)"><div class="sb-sub-cc" id="ssbc-prescreening2">✓</div></div></div>
+    <div class="sb-sub" id="sub-prescreening" onclick="goTo('prescreening')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Questions & Move-In</span><div class="sb-sub-ck" onclick="subToggle('prescreening',event)"><div class="sb-sub-cc" id="ssbc-prescreening">✓</div></div></div>
+    <div class="sb-sub" id="sub-prescreening2" onclick="goTo('prescreening2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Fraud Guard</span><div class="sb-sub-ck" onclick="subToggle('prescreening2',event)"><div class="sb-sub-cc" id="ssbc-prescreening2">✓</div></div></div>
   </div>
 
   <div class="sb-item hi" id="sb-notifications">
@@ -370,12 +370,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('properties')"><div class="sb-cc" id="sbc-properties">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-properties">
-    <div class="sb-sub" id="sub-properties"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties')">Overview</span><div class="sb-sub-ck" onclick="subToggle('properties',event)"><div class="sb-sub-cc" id="ssbc-properties">✓</div></div></div>
-    <div class="sb-sub" id="sub-properties2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties2')">Step 1: Information</span><div class="sb-sub-ck" onclick="subToggle('properties2',event)"><div class="sb-sub-cc" id="ssbc-properties2">✓</div></div></div>
-    <div class="sb-sub" id="sub-properties3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties3')">Step 2: Showing Method</span><div class="sb-sub-ck" onclick="subToggle('properties3',event)"><div class="sb-sub-cc" id="ssbc-properties3">✓</div></div></div>
-    <div class="sb-sub" id="sub-properties4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties4')">Step 3: Price</span><div class="sb-sub-ck" onclick="subToggle('properties4',event)"><div class="sb-sub-cc" id="ssbc-properties4">✓</div></div></div>
-    <div class="sb-sub" id="sub-properties5"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties5')">Photos & Defaults</span><div class="sb-sub-ck" onclick="subToggle('properties5',event)"><div class="sb-sub-cc" id="ssbc-properties5">✓</div></div></div>
-    <div class="sb-sub" id="sub-properties6"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('properties6')">Take Action</span><div class="sb-sub-ck" onclick="subToggle('properties6',event)"><div class="sb-sub-cc" id="ssbc-properties6">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties" onclick="goTo('properties')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Overview</span><div class="sb-sub-ck" onclick="subToggle('properties',event)"><div class="sb-sub-cc" id="ssbc-properties">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties2" onclick="goTo('properties2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Step 1: Information</span><div class="sb-sub-ck" onclick="subToggle('properties2',event)"><div class="sb-sub-cc" id="ssbc-properties2">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties3" onclick="goTo('properties3')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Step 2: Showing Method</span><div class="sb-sub-ck" onclick="subToggle('properties3',event)"><div class="sb-sub-cc" id="ssbc-properties3">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties4" onclick="goTo('properties4')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Step 3: Price</span><div class="sb-sub-ck" onclick="subToggle('properties4',event)"><div class="sb-sub-cc" id="ssbc-properties4">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties5" onclick="goTo('properties5')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Photos & Defaults</span><div class="sb-sub-ck" onclick="subToggle('properties5',event)"><div class="sb-sub-cc" id="ssbc-properties5">✓</div></div></div>
+    <div class="sb-sub" id="sub-properties6" onclick="goTo('properties6')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Take Action</span><div class="sb-sub-ck" onclick="subToggle('properties6',event)"><div class="sb-sub-cc" id="ssbc-properties6">✓</div></div></div>
   </div>
 
   <div class="sb-div"></div>
@@ -385,12 +385,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('cc')"><div class="sb-cc" id="sbc-cc">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-cc">
-    <div class="sb-sub" id="sub-cc"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc')">Phone & Prospect List</span><div class="sb-sub-ck" onclick="subToggle('cc',event)"><div class="sb-sub-cc" id="ssbc-cc">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2')">Message Colors & Channels</span><div class="sb-sub-ck" onclick="subToggle('cc2',event)"><div class="sb-sub-cc" id="ssbc-cc2">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc2b"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc2b')">Follow-Up Cadences</span><div class="sb-sub-ck" onclick="subToggle('cc2b',event)"><div class="sb-sub-cc" id="ssbc-cc2b">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc3"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc3')">AI & Snippets</span><div class="sb-sub-ck" onclick="subToggle('cc3',event)"><div class="sb-sub-cc" id="ssbc-cc3">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc4"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc4')">Calls & Actions</span><div class="sb-sub-ck" onclick="subToggle('cc4',event)"><div class="sb-sub-cc" id="ssbc-cc4">✓</div></div></div>
-    <div class="sb-sub" id="sub-cc5"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('cc5')">Showing Methods</span><div class="sb-sub-ck" onclick="subToggle('cc5',event)"><div class="sb-sub-cc" id="ssbc-cc5">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc" onclick="goTo('cc')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Phone & Prospect List</span><div class="sb-sub-ck" onclick="subToggle('cc',event)"><div class="sb-sub-cc" id="ssbc-cc">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc2" onclick="goTo('cc2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Message Colors & Channels</span><div class="sb-sub-ck" onclick="subToggle('cc2',event)"><div class="sb-sub-cc" id="ssbc-cc2">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc2b" onclick="goTo('cc2b')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Follow-Up Cadences</span><div class="sb-sub-ck" onclick="subToggle('cc2b',event)"><div class="sb-sub-cc" id="ssbc-cc2b">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc3" onclick="goTo('cc3')"><span class="sb-sub-dot"></span><span class="sb-sub-label">AI & Snippets</span><div class="sb-sub-ck" onclick="subToggle('cc3',event)"><div class="sb-sub-cc" id="ssbc-cc3">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc4" onclick="goTo('cc4')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Calls & Actions</span><div class="sb-sub-ck" onclick="subToggle('cc4',event)"><div class="sb-sub-cc" id="ssbc-cc4">✓</div></div></div>
+    <div class="sb-sub" id="sub-cc5" onclick="goTo('cc5')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Showing Methods</span><div class="sb-sub-ck" onclick="subToggle('cc5',event)"><div class="sb-sub-cc" id="ssbc-cc5">✓</div></div></div>
   </div>
 
   <div class="sb-item hi has-acc" id="sb-calendar">
@@ -398,8 +398,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('calendar')"><div class="sb-cc" id="sbc-calendar">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-calendar">
-    <div class="sb-sub" id="sub-calendar"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('calendar')">Calendar Overview</span><div class="sb-sub-ck" onclick="subToggle('calendar',event)"><div class="sb-sub-cc" id="ssbc-calendar">✓</div></div></div>
-    <div class="sb-sub" id="sub-calendar2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('calendar2')">Self-Guided & Wrap-up</span><div class="sb-sub-ck" onclick="subToggle('calendar2',event)"><div class="sb-sub-cc" id="ssbc-calendar2">✓</div></div></div>
+    <div class="sb-sub" id="sub-calendar" onclick="goTo('calendar')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Calendar Overview</span><div class="sb-sub-ck" onclick="subToggle('calendar',event)"><div class="sb-sub-cc" id="ssbc-calendar">✓</div></div></div>
+    <div class="sb-sub" id="sub-calendar2" onclick="goTo('calendar2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Self-Guided & Wrap-up</span><div class="sb-sub-ck" onclick="subToggle('calendar2',event)"><div class="sb-sub-cc" id="ssbc-calendar2">✓</div></div></div>
   </div>
 
   <div class="sb-div"></div>
@@ -413,8 +413,8 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif;color:var(-
     <div class="sb-ck" onclick="sbToggle('reapps')"><div class="sb-cc" id="sbc-reapps">✓</div></div>
   </div>
   <div class="sb-acc" id="acc-reapps" style="display:none;">
-    <div class="sb-sub" id="sub-reapps"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('reapps')">Templates Overview</span><div class="sb-sub-ck" onclick="subToggle('reapps',event)"><div class="sb-sub-cc" id="ssbc-reapps">✓</div></div></div>
-    <div class="sb-sub" id="sub-reapps2"><span class="sb-sub-dot"></span><span class="sb-sub-label" onclick="goTo('reapps2')">Configure Template</span><div class="sb-sub-ck" onclick="subToggle('reapps2',event)"><div class="sb-sub-cc" id="ssbc-reapps2">✓</div></div></div>
+    <div class="sb-sub" id="sub-reapps" onclick="goTo('reapps')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Templates Overview</span><div class="sb-sub-ck" onclick="subToggle('reapps',event)"><div class="sb-sub-cc" id="ssbc-reapps">✓</div></div></div>
+    <div class="sb-sub" id="sub-reapps2" onclick="goTo('reapps2')"><span class="sb-sub-dot"></span><span class="sb-sub-label">Configure Template</span><div class="sb-sub-ck" onclick="subToggle('reapps2',event)"><div class="sb-sub-cc" id="ssbc-reapps2">✓</div></div></div>
   </div>
   <div class="sb-div"></div>
   <div class="sb-gl">✅ Mandatory Wrap-up</div>
